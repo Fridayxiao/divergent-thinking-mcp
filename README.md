@@ -24,21 +24,19 @@ While traditional thinking follows logical progressions, this MCP server embrace
 
 ## 🚀 Installation & Usage / 安装与使用
 
-### Using uv (Recommended) / 使用uv（推荐）
+### Installation
 
 ```bash
-# Clone or create the project
+# 1. using uv
+uv tool install divergent-thinking-mcp --index https://pypi.org/simple
+
+# 2. Clone the project
 # 克隆或创建项目
-git clone <your-repo> divergent-thinking-mcp
+git clone https://github.com/Fridayxiao/divergent-thinking-mcp.git
 cd divergent-thinking-mcp
+# install  with uv
+uv tool install .
 
-# Run directly with uv
-# 使用uv直接运行
-uv run divergent-thinking-mcp
-
-# Or run the script
-# 或运行脚本
-uv run scripts/run_server.py
 ```
 
 
@@ -53,7 +51,6 @@ Add to your MCP client configuration:
     "divergent-thinking": {
       "command": "uv",
       "args": ["run", "divergent-thinking-mcp"],
-      "cwd": "/path/to/divergent-thinking-mcp"
     }
   }
 }

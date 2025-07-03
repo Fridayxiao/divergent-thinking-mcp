@@ -11,20 +11,26 @@ license = {text = "MIT"}
 authors = [
     {name = "Fridayxiao", email = "bonjj84@gmail.com"}
 ]
-keywords = ["mcp", "creativity", "divergent-thinking", "ai", "absurd"]
+requires-python = ">=3.12"
+keywords = ["mcp", "creativity", "divergent-thinking", "ai", "tool"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Environment :: Console",
 ]
-requires-python = ">=3.12"
 dependencies = [
     "mcp",
     "asyncio-mqtt>=0.16.0",
     "jinja2"
 ]
+
+[project.metadata]
+tool.classifier = "true"
+
 
 [project.optional-dependencies]
 dev = [
@@ -37,6 +43,8 @@ dev = [
 
 [project.scripts]
 "divergent-thinking-mcp" = "divergent_thinking_mcp.divergent_mcp:run"
+[project.entry-points."uv.tools"]
+divergent-thinking-mcp = "divergent_thinking_mcp.divergent_mcp:run"
 
 [project.urls]
 Homepage = "https://github.com/Fridayxiao/divergent-thinking-mcp"
@@ -47,7 +55,5 @@ Issues = "https://github.com/Fridayxiao/divergent-thinking-mcp/issues"
 packages = ["src/divergent_thinking_mcp"]
 
 
-[tool.mypy]
-python_version = "3.12"
-warn_return_any = true
-warn_unused_configs = true
+[tool.hatch.metadata]
+allow-direct-references = true

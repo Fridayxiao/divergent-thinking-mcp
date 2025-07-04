@@ -10,16 +10,18 @@ While other thinking follows logical progressions, this MCP server embraces dive
 
 ## 🛠️ Tools / 工具
 
-### Core Divergent Thinking Tools / 核心发散思维工具
+### Core Divergent Thinking Tools
 - **`divergent_thinking`** - A comprehensive tool for generating creative thoughts and branches through structured divergent thinking processes. Supports linear progression and branching exploration with various thinking techniques.
-- **`divergent_thinking`** - 一个全面的工具，通过结构化的发散思维过程生成创造性想法和分支。支持线性进展和使用各种思维技巧的分支探索。
 - **`generate_branches`** - Generate multiple distinct creative branches from a single thought, exploring completely different directions.
-- **`generate_branches`** - 从单一想法生成多个不同的创意分支，探索完全不同的方向。
 - **`perspective_shift`** - Shift perspective on a thought to generate new insights by viewing concepts from impossible or unusual viewpoints.
-- **`perspective_shift`** - 转变对想法的视角，通过从不可能或不寻常的角度查看概念来生成新见解。
 - **`creative_constraint`** - Apply creative constraints to transform thoughts by introducing limitations or impossible elements.
-- **`creative_constraint`** - 应用创造性约束，通过引入限制或不可能的元素来转变想法。
 - **`combine_thoughts`** - Combine two divergent thoughts into something entirely new that incorporates elements from both.
+
+### 核心发散思维工具
+- **`divergent_thinking`** - 一个全面的工具，通过结构化的发散思维过程生成创造性想法和分支。支持线性进展和使用各种思维技巧的分支探索。
+- **`generate_branches`** - 从单一想法生成多个不同的创意分支，探索完全不同的方向。
+- **`perspective_shift`** - 转变对想法的视角，通过从不可能或不寻常的角度查看概念来生成新见解。
+- **`creative_constraint`** - 应用创造性约束，通过引入限制或不可能的元素来转变想法。
 - **`combine_thoughts`** - 将两个发散的想法合并为全新的事物，融合两者的元素。
 
 ## 🚀 Installation & Usage / 安装与使用

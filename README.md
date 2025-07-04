@@ -1,11 +1,11 @@
 # Divergent Thinking MCP Server / 发散思维MCP服务器
 
-An MCP (Model Context Protocol) server that promotes divergent and creative thinking patterns for creation - the opposite of sequential logical thinking.
-一个MCP（模型上下文协议）服务器，促进创造性思维模式，是顺序逻辑思维的对立面。
+An MCP (Model Context Protocol) server that promotes divergent and creative thinking patterns for creation - the Supplement of sequential logical thinking.
+一个MCP（模型上下文协议）服务器，促进创造性思维模式，是顺序逻辑思维的补充。
 
 ## 🎨 Philosophy / 设计理念
 
-While traditional thinking follows logical progressions, this MCP server embraces divergent
+While other thinking follows logical progressions, this MCP server embraces divergent
 传统思维遵循逻辑进展，而此MCP服务器拥抱发散思维
 
 ## 🛠️ Tools / 工具
@@ -58,7 +58,7 @@ Add to your MCP client configuration:
 
 ## 🎭 Example Usage / 使用示例
 
-### English Examples
+### Examples
 
 ```python
 # Generate creative branches from a core idea
@@ -95,7 +95,7 @@ result = divergent_thinking(
 )
 ```
 
-### 中文示例
+### 示例
 
 ```python
 # 从核心想法生成创意分支

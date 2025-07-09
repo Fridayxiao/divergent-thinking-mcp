@@ -5,8 +5,8 @@ A Model Context Protocol server that promotes absurd, non-linear, and creative
 thinking patterns for artistic creation - the opposite of sequential logical thinking.
 """
 
-__version__ = "1.0.0"
-__author__ = "Your Name"
+__version__ = "0.1.0"
+__author__ = "Fridayxiao"
 
 from .divergent_mcp import app, main
 

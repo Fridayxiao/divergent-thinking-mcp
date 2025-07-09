@@ -232,7 +232,7 @@ async def main():
             write_stream,
             InitializationOptions(
                 server_name="divergent-thinking",
-                server_version="1.0.0",
+                server_version="0.1.0",
                 capabilities=app.get_capabilities(
                     notification_options=NotificationOptions(),
                     experimental_capabilities={},
@@ -362,61 +362,3 @@ class DivergentThinkingServer:
             }
         else:
             return {"action": "complete", "thought_history": self.thought_history}
-
-
-# def format_thought(self, thought_data: Dict[str, Any]) -> str:
-#     """Format thought for display"""
-#     prefix = "🌱 Branch" if thought_data.get('branchId') else "💭 Thought"
-#     branch_info = f" (Branch {thought_data['branchId']})" if thought_data.get('branchId') else ""
-#     return f"{prefix} {thought_data['thoughtNumber']}/{thought_data['totalThoughts']}{branch_info}: {thought_data['thought']}"
-
-# def generate_prompt(self, template_name: str, **kwargs) -> str:
-#     """Generate prompt using Jinja2 template"""
-#     if template_name not in PROMPT_TEMPLATES:
-#         raise ValueError(f"Unknown template: {template_name}")
-#     template = self.prompt_env.from_string(PROMPT_TEMPLATES[template_name])
-#     return template.render(** kwargs)
-
-# def process_thought(self, thought_data: Dict[str, Any]) -> Dict[str, Any]:
-#     """Process thought and generate next thought or branches"""
-#     # Validate input data
-#     validated_data = self.validate_thought_data(thought_data)
-
-#     # Add to history
-#     self.thought_history.append(validated_data)
-
-#     # Generate branches if needed
-#     if validated_data.get('generate_branches', False) and len(self.thought_history) > 0:
-#         prompt = self.generate_prompt(
-#             "branch_generation",
-#             thought=validated_data['thought']
-#         )
-#         return {
-#             "prompt": prompt,
-#             "action": "generate_branches",
-#             "current_thought": validated_data
-#         }
-
-#     # Determine next action
-#     if validated_data['nextThoughtNeeded']:
-#         # Generate prompt for next thought
-#         prompt_type = validated_data.get('prompt_type', 'creative_constraint')
-#         constraint = validated_data.get('constraint', 'introduce an impossible element')
-
-#         prompt = self.generate_prompt(
-#             prompt_type,
-#             thought=validated_data['thought'],
-#             constraint=constraint,
-#             perspective_type=validated_data.get('perspective_type', 'inanimate_object')
-#         )
-
-#         return {
-#             "prompt": prompt,
-#             "action": "continue_thought",
-#             "current_thought": validated_data
-#         }
-#     else:
-#         return {
-#             "action": "complete",
-#             "thought_history": self.thought_history
-#         }

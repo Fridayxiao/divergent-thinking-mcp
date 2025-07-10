@@ -10,19 +10,46 @@ While other thinking follows logical progressions, this MCP server embraces dive
 
 ## 🛠️ Tools / 工具
 
-### Core Divergent Thinking Tools
-- **`divergent_thinking`** - A comprehensive tool for generating creative thoughts and branches through structured divergent thinking processes. Supports linear progression and branching exploration with various thinking techniques.
-- **`generate_branches`** - Generate multiple distinct creative branches from a single thought, exploring completely different directions.
-- **`perspective_shift`** - Shift perspective on a thought to generate new insights by viewing concepts from impossible or unusual viewpoints.
-- **`creative_constraint`** - Apply creative constraints to transform thoughts by introducing limitations or impossible elements.
-- **`combine_thoughts`** - Combine two divergent thoughts into something entirely new that incorporates elements from both.
+### Unified Divergent Thinking Tool / 统一发散思维工具
 
-### 核心发散思维工具
-- **`divergent_thinking`** - 一个全面的工具，通过结构化的发散思维过程生成创造性想法和分支。支持线性进展和使用各种思维技巧的分支探索。
-- **`generate_branches`** - 从单一想法生成多个不同的创意分支，探索完全不同的方向。
-- **`perspective_shift`** - 转变对想法的视角，通过从不可能或不寻常的角度查看概念来生成新见解。
-- **`creative_constraint`** - 应用创造性约束，通过引入限制或不可能的元素来转变想法。
-- **`combine_thoughts`** - 将两个发散的想法合并为全新的事物，融合两者的元素。
+This MCP server provides a **single comprehensive tool** that offers 6 powerful creativity methods through one unified interface, eliminating confusion and cognitive overload.
+此MCP服务器提供**单一综合工具**，通过统一界面提供6种强大的创意方法，消除混乱和认知负担。
+
+#### **`divergent_thinking`** - Comprehensive Creative Thinking Tool / 综合创意思维工具
+
+A unified tool providing access to 6 proven creativity methodologies through parameter-driven functionality selection:
+通过参数驱动功能选择提供6种经过验证的创意方法的统一工具：
+
+**Available Thinking Methods / 可用思维方法：**
+
+1. **`structured_process`** (Default/默认) - Multi-turn comprehensive exploration with thought tracking and branching
+   多轮综合探索，具有思维跟踪和分支功能
+
+2. **`generate_branches`** - Create 3 different creative directions from a single thought (single response)
+   从单一想法创建3个不同的创意方向（单次响应）
+
+3. **`perspective_shift`** - View thoughts through unusual viewpoints (inanimate objects, abstract concepts, impossible beings)
+   通过不寻常的视角查看想法（无生命物体、抽象概念、不可能的存在）
+
+4. **`creative_constraint`** - Apply strategic limitations to force breakthrough innovation
+   应用战略限制来强制突破性创新
+
+5. **`combine_thoughts`** - Merge two concepts into novel hybrid solutions
+   将两个概念合并为新颖的混合解决方案
+
+6. **`reverse_brainstorming`** - Explore failure modes to discover breakthrough solutions
+   探索失败模式以发现突破性解决方案
+
+**Key Features / 主要特性：**
+
+- **Multi-turn vs Single-shot**: `structured_process` provides complete multi-turn exploration; others are single-response methods
+  多轮与单次：`structured_process`提供完整的多轮探索；其他为单次响应方法
+- **Advanced Techniques**: Optional SCAMPER, Six Thinking Hats, morphological analysis integration
+  高级技术：可选的SCAMPER、六顶思考帽、形态分析集成
+- **Intelligent Routing**: Single tool interface with method-specific parameter handling
+  智能路由：具有方法特定参数处理的单一工具界面
+- **Deterministic Results**: Optional seed parameter for reproducible creative outputs
+  确定性结果：可选种子参数用于可重现的创意输出
 
 ## 🚀 Installation & Usage / 安装与使用
 
@@ -40,7 +67,6 @@ cd divergent-thinking-mcp
 uv tool install .
 
 ```
-
 
 ## 📝 Configuration / 配置
 
@@ -60,76 +86,23 @@ Add to your MCP client configuration:
 
 ## 🎭 Example Usage / 使用示例
 
-### Examples
+### Examples / 示例
 
-```python
-# Generate creative branches from a core idea
-generate_branches(
-    thought="Design an innovative electric fan"
-)
+<!-- Usage examples will be added here -->
+<!-- 使用示例将在此处添加 -->
 
-# Shift perspective to gain new insights
-perspective_shift(
-    thought="Design an intelligent office chair",
-    perspective_type="inanimate_object"
-)
+**Coming Soon / 即将推出:**
 
-# Apply creative constraints
-creative_constraint(
-    thought="Design an eco-friendly water bottle",
-    constraint="Use edible materials"
-)
+- Complete usage examples for all 6 thinking methods
+  所有6种思维方法的完整使用示例
+- Step-by-step tutorials for complex creative challenges
+  复杂创意挑战的分步教程
+- Integration examples with popular MCP clients
+  与流行MCP客户端的集成示例
 
-# Combine two divergent thoughts
-combine_thoughts(
-    thought1="Ergonomic lumbar support design for intelligent office chairs",
-    thought2="Office chair integrated with AI voice assistant control system"
-)
+**Placeholder for detailed examples:**
 
-# Comprehensive divergent thinking process
-result = divergent_thinking(
-    thought="Design an environmentally friendly smart water cup",
-    thoughtNumber=1,
-    totalThoughts=3,
-    nextThoughtNeeded=True,
-    generate_branches=True,
-    prompt_type="branch_generation"
-)
-```
-
-### 示例
-
-```python
-# 从核心想法生成创意分支
-generate_branches(
-    thought="设计一款新颖的电风扇"
-)
-
-# 转变视角以获得新见解
-perspective_shift(
-    thought="设计一款智能办公椅",
-    perspective_type="inanimate_object"
-)
-
-# 应用创造性约束
-creative_constraint(
-    thought="设计一款环保水瓶",
-    constraint="使用可食用材料"
-)
-
-# 合并两个发散的想法
-combine_thoughts(
-    thought1="智能办公椅的人体工学腰椎支撑设计",
-    thought2="办公椅集成AI语音助手控制系统"
-)
-
-# 全面的发散思维过程
-result = divergent_thinking(
-    thought="设计一款环保型智能水杯",
-    thoughtNumber=1,
-    totalThoughts=3,
-    nextThoughtNeeded=True,
-    generate_branches=True,
-    prompt_type="branch_generation"
-)
+```text
+[Examples will be updated to reflect the new unified tool structure]
+[示例将更新以反映新的统一工具结构]
 ```

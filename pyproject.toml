@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "divergent-thinking-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP server for divergent thinking"
 readme = "README.md"
 license = {text = "MIT"}
@@ -24,8 +24,8 @@ classifiers = [
 ]
 dependencies = [
     "mcp",
-    "asyncio-mqtt>=0.16.0",
-    "jinja2"
+    "jinja2",
+    "pytest>=8.4.1",
 ]
 
 [project.metadata]
@@ -57,3 +57,10 @@ packages = ["src/divergent_thinking_mcp"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[[tool.uv.index]]
+url = "https://mirrors.aliyun.com/pypi/simple"
+default = true

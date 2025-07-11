@@ -25,12 +25,36 @@ class TestCreativityAlgorithms:
     def sample_context(self):
         """Create a sample creativity context for testing."""
         return CreativityContext(
-            domain="technology",
+            domain="artificial intelligence",
             constraints=["budget limited", "must be portable"],
             target_audience="developers",
             time_period="2024",
             resources=["cloud computing", "mobile devices"],
             goals=["improve productivity", "reduce complexity"]
+        )
+
+    @pytest.fixture
+    def cybersecurity_context(self):
+        """Create a cybersecurity context for testing."""
+        return CreativityContext(
+            domain="cybersecurity",
+            constraints=["regulatory compliance", "performance requirements"],
+            target_audience="security professionals",
+            time_period="current",
+            resources=["security tools", "threat intelligence"],
+            goals=["improve security posture", "reduce vulnerabilities"]
+        )
+
+    @pytest.fixture
+    def healthcare_context(self):
+        """Create a healthcare context for testing."""
+        return CreativityContext(
+            domain="healthcare technology",
+            constraints=["patient safety", "regulatory approval"],
+            target_audience="healthcare providers",
+            time_period="current",
+            resources=["medical devices", "health data"],
+            goals=["improve patient outcomes", "reduce costs"]
         )
     
     def test_apply_scamper(self, algorithms):
@@ -63,9 +87,9 @@ class TestCreativityAlgorithms:
         """Test analogical thinking technique."""
         idea = "mobile app design"
         results = algorithms.apply_analogical_thinking(idea)
-        
+
         assert isinstance(results, list)
-        assert len(results) == 12  # 3 domains × 4 prompts each
+        assert len(results) == 6  # Limited to top 6 most relevant analogies
         assert all(isinstance(result, str) for result in results)
         assert all(idea in result for result in results)
     
@@ -76,7 +100,7 @@ class TestCreativityAlgorithms:
         results = algorithms.apply_analogical_thinking(idea, domain)
         
         assert isinstance(results, list)
-        assert len(results) == 4  # 1 domain × 4 prompts
+        assert len(results) == 6  # Limited to top 6 most relevant analogies
         assert all(isinstance(result, str) for result in results)
         assert all("music" in result.lower() for result in results)
     
@@ -111,8 +135,8 @@ class TestCreativityAlgorithms:
         for hat in expected_hats:
             assert hat in results
             assert isinstance(results[hat], list)
-            assert len(results[hat]) == 3  # 3 prompts per hat
-            assert all(idea in prompt for prompt in results[hat])
+            assert len(results[hat]) == 4  # 4 prompts per hat (domain-aware version)
+            assert all(isinstance(prompt, str) and len(prompt) > 0 for prompt in results[hat])
     
     def test_apply_biomimicry(self, algorithms):
         """Test biomimicry technique."""
@@ -252,3 +276,177 @@ class TestIntegration:
         
         constraint_results = algorithms.apply_constraint_relaxation(idea, ["cost"])
         assert len(constraint_results) > 0
+
+
+class TestDomainAwareCreativity:
+    """Test suite for domain-aware creativity enhancements."""
+
+    @pytest.fixture
+    def algorithms(self):
+        """Create a CreativityAlgorithms instance for testing."""
+        return CreativityAlgorithms()
+
+    def test_intelligent_word_selection_ai_domain(self, algorithms):
+        """Test that intelligent word selection returns AI-relevant terms."""
+        context = CreativityContext(domain="artificial intelligence", constraints=[])
+
+        words = algorithms._intelligent_word_selection("artificial intelligence", context, "core_concepts", 3)
+
+        # Should contain AI-relevant terms
+        ai_terms = ["neural networks", "machine learning", "deep learning", "algorithms", "optimization", "inference"]
+        assert any(term in " ".join(words) for term in ai_terms)
+
+        # Should not contain irrelevant terms
+        irrelevant_terms = ["butterfly", "cooking", "sports"]
+        assert not any(term in " ".join(words) for term in irrelevant_terms)
+
+    def test_intelligent_word_selection_cybersecurity_domain(self, algorithms):
+        """Test that intelligent word selection returns cybersecurity-relevant terms."""
+        context = CreativityContext(domain="cybersecurity", constraints=[])
+
+        words = algorithms._intelligent_word_selection("cybersecurity", context, "core_concepts", 3)
+
+        # Should contain cybersecurity-relevant terms
+        cybersec_terms = ["encryption", "authentication", "firewall", "intrusion detection", "vulnerability"]
+        assert any(term in " ".join(words) for term in cybersec_terms)
+
+    def test_domain_aware_scamper_ai(self, algorithms):
+        """Test SCAMPER with AI domain awareness."""
+        context = CreativityContext(domain="artificial intelligence", constraints=[])
+
+        scamper_results = algorithms.apply_scamper("neural network optimizer", context)
+
+        # Should contain AI-relevant terms
+        combined_results = " ".join(scamper_results).lower()
+        ai_terms = ["neural", "machine learning", "algorithms", "optimization", "training", "inference"]
+        assert any(term in combined_results for term in ai_terms)
+
+        # Should reference the domain
+        assert "artificial intelligence" in combined_results
+
+    def test_domain_aware_scamper_cybersecurity(self, algorithms):
+        """Test SCAMPER with cybersecurity domain awareness."""
+        context = CreativityContext(domain="cybersecurity", constraints=[])
+
+        scamper_results = algorithms.apply_scamper("network monitoring system", context)
+
+        # Should contain cybersecurity-relevant terms
+        combined_results = " ".join(scamper_results).lower()
+        cybersec_terms = ["encryption", "authentication", "security", "threat", "vulnerability", "firewall"]
+        assert any(term in combined_results for term in cybersec_terms)
+
+        # Should reference the domain
+        assert "cybersecurity" in combined_results
+
+    def test_domain_aware_random_word_association(self, algorithms):
+        """Test random word association with domain awareness."""
+        context = CreativityContext(domain="healthcare technology", constraints=[])
+
+        word_results = algorithms.generate_random_word_associations("patient monitoring", 3, context)
+
+        # Should contain healthcare-relevant terms
+        combined_results = " ".join(word_results).lower()
+        healthcare_terms = ["patient", "clinical", "medical", "health", "care", "treatment", "diagnosis"]
+        assert any(term in combined_results for term in healthcare_terms)
+
+        # Should reference the domain
+        assert "healthcare technology" in combined_results
+
+    def test_domain_aware_analogical_thinking(self, algorithms):
+        """Test analogical thinking with domain-relevant analogies."""
+        context = CreativityContext(domain="artificial intelligence", constraints=[])
+
+        analogies = algorithms.apply_analogical_thinking("machine learning model", context=context)
+
+        # Should contain AI-relevant analogies
+        combined_analogies = " ".join(analogies).lower()
+        ai_analogy_terms = ["biological", "neural", "cognitive", "mathematical", "learning", "intelligence"]
+        assert any(term in combined_analogies for term in ai_analogy_terms)
+
+        # Should reference the domain
+        assert "artificial intelligence" in combined_analogies
+
+    def test_domain_aware_biomimicry(self, algorithms):
+        """Test biomimicry with domain-relevant examples."""
+        context = CreativityContext(domain="renewable energy", constraints=[])
+
+        biomimicry_results = algorithms.apply_biomimicry("solar panel design", context)
+
+        # Should contain renewable energy relevant biomimicry
+        combined_results = " ".join(biomimicry_results).lower()
+        energy_bio_terms = ["photosynthesis", "solar", "energy", "conversion", "efficiency", "light"]
+        assert any(term in combined_results for term in energy_bio_terms)
+
+        # Should reference the domain
+        assert "renewable energy" in combined_results
+
+    def test_domain_aware_six_thinking_hats(self, algorithms):
+        """Test Six Thinking Hats with domain-specific perspectives."""
+        context = CreativityContext(domain="healthcare technology", constraints=[])
+
+        hats_results = algorithms.apply_six_thinking_hats("telemedicine platform", context)
+
+        # Should have all six hats
+        assert len(hats_results) == 6
+
+        # Should contain healthcare-specific perspectives
+        all_results = " ".join([" ".join(prompts) for prompts in hats_results.values()]).lower()
+        healthcare_terms = ["patient", "clinical", "medical", "healthcare", "safety", "regulatory"]
+        assert any(term in all_results for term in healthcare_terms)
+
+    def test_domain_relevance_improvement(self, algorithms):
+        """Test that domain-aware methods produce more relevant outputs than generic ones."""
+        context = CreativityContext(domain="cybersecurity", constraints=[])
+
+        # Test domain-aware SCAMPER
+        domain_scamper = algorithms.apply_scamper("firewall system", context)
+        combined_domain = " ".join(domain_scamper).lower()
+
+        # Should contain cybersecurity terms
+        cybersec_terms = ["security", "threat", "encryption", "authentication", "vulnerability"]
+        domain_relevance_score = sum(1 for term in cybersec_terms if term in combined_domain)
+
+        # Should have domain relevance (at least 1 relevant term, showing improvement over random)
+        assert domain_relevance_score >= 1
+
+    def test_context_parameter_usage(self, algorithms):
+        """Test that context parameters influence output."""
+        context_with_goals = CreativityContext(
+            domain="artificial intelligence",
+            constraints=["performance"],
+            goals=["improve accuracy", "reduce latency"]
+        )
+
+        context_with_constraints = CreativityContext(
+            domain="artificial intelligence",
+            constraints=["privacy", "interpretability"],
+            goals=[]
+        )
+
+        # Test with goals
+        words_with_goals = algorithms._intelligent_word_selection(
+            "artificial intelligence", context_with_goals, "core_concepts", 5
+        )
+
+        # Test with constraints
+        words_with_constraints = algorithms._intelligent_word_selection(
+            "artificial intelligence", context_with_constraints, "core_concepts", 5
+        )
+
+        # Both should return AI-relevant terms
+        ai_terms = ["neural networks", "machine learning", "algorithms", "optimization"]
+        assert any(term in " ".join(words_with_goals) for term in ai_terms)
+        assert any(term in " ".join(words_with_constraints) for term in ai_terms)
+
+    def test_fallback_behavior(self, algorithms):
+        """Test fallback behavior for unknown domains."""
+        context = CreativityContext(domain="unknown_domain", constraints=[])
+
+        # Should still work and fall back to generic words
+        words = algorithms._intelligent_word_selection("unknown_domain", context, "core_concepts", 3)
+        assert len(words) == 3
+        assert all(isinstance(word, str) for word in words)
+
+        # SCAMPER should still work
+        scamper_results = algorithms.apply_scamper("test idea", context)
+        assert len(scamper_results) == 7

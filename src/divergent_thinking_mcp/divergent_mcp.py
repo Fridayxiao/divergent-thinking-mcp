@@ -6,14 +6,22 @@ An MCP server that enhances divergent thinking and creativity through prompt eng
 and context design, leveraging existing Agent/LLM capabilities.
 
 This server provides tools for:
+- Interactive domain specification with 78+ multi-word domains
+- Agent-driven context parameters (audience, time, resources, goals)
 - Generating creative branches from thoughts
 - Shifting perspectives to gain new insights
 - Applying creative constraints to transform ideas
 - Combining divergent thoughts into novel concepts
 - Structured divergent thinking processes
 
+Key Features:
+- Required domain specification for targeted creativity
+- Multi-word domain precision (e.g., "mobile app development", "healthcare technology")
+- Comprehensive parameter validation and error handling
+- Context-aware prompt generation across all creativity methods
+
 Author: Fridayxiao
-Version: 0.2.0
+Version: 0.2.1
 License: MIT
 """
 
@@ -292,18 +300,24 @@ if __name__ == "__main__":
 
 class DivergentThinkingServer:
     """
-    Core server class for handling divergent thinking operations.
+    Core server class for handling divergent thinking operations with interactive domain specification.
 
-    This class manages thought history, branch generation, and prompt creation
+    This class manages thought history, branch generation, and context-aware prompt creation
     for various divergent thinking techniques. It provides methods for validating
-    input data, formatting thoughts, and generating creative prompts.
+    input data, creating creativity contexts, and generating targeted creative prompts.
+
+    Key Features:
+        - Interactive domain specification with 78+ multi-word domains
+        - Agent-driven context parameters (audience, time, resources, goals)
+        - Comprehensive parameter validation and error handling
+        - Context-aware prompt generation across all creativity methods
 
     Attributes:
         config: Server configuration settings
         thought_history: List of processed thoughts with metadata
         branches: Dictionary mapping branch IDs to their thought sequences
         prompt_env: Jinja2 environment for template rendering
-        enhanced_prompt_generator: Generator for enhanced creativity prompts
+        enhanced_prompt_generator: Generator for enhanced creativity prompts with context awareness
     """
 
     def __init__(self, config: Optional[MCPServerConfig] = None) -> None:
@@ -408,6 +422,32 @@ class DivergentThinkingServer:
                     input_data["branchId"]
                 )
 
+            # Validate interactive context parameters
+            if "domain" in input_data:
+                validated_data["domain"] = ThoughtValidator.validate_domain(
+                    input_data["domain"]
+                )
+
+            if "target_audience" in input_data:
+                validated_data["target_audience"] = ThoughtValidator.validate_target_audience(
+                    input_data["target_audience"]
+                )
+
+            if "time_period" in input_data:
+                validated_data["time_period"] = ThoughtValidator.validate_time_period(
+                    input_data["time_period"]
+                )
+
+            if "resources" in input_data:
+                validated_data["resources"] = ThoughtValidator.validate_resources(
+                    input_data["resources"]
+                )
+
+            if "goals" in input_data:
+                validated_data["goals"] = ThoughtValidator.validate_goals(
+                    input_data["goals"]
+                )
+
             # Copy other safe fields
             safe_optional_fields = ["thought1", "thought2"]
             for field in safe_optional_fields:
@@ -432,7 +472,10 @@ class DivergentThinkingServer:
 
     def create_creativity_context(self, thought_data: ThoughtData) -> CreativityContext:
         """
-        Create a creativity context from thought data.
+        Create a creativity context from thought data with agent-driven parameters.
+
+        All context parameters must be explicitly specified by the agent.
+        No automatic extraction or fallback logic is used.
 
         Args:
             thought_data: Validated thought data
@@ -440,32 +483,58 @@ class DivergentThinkingServer:
         Returns:
             CreativityContext: Context for creativity algorithms
         """
-        # Extract domain from thought content (simple heuristic)
-        thought_text = thought_data["thought"].lower()
-        domain = "general"
+        # 1. Domain: Agent must specify domain explicitly (already validated)
+        domain = thought_data.get("domain")
+        if not domain:
+            raise ValidationError(
+                "Domain must be explicitly specified by the agent. Please provide a specific domain/field for targeted creativity.",
+                field_name="domain",
+                field_value=None
+            )
 
-        if any(word in thought_text for word in ["design", "product", "interface", "user"]):
-            domain = "design"
-        elif any(word in thought_text for word in ["technology", "software", "app", "system"]):
-            domain = "technology"
-        elif any(word in thought_text for word in ["business", "market", "customer", "service"]):
-            domain = "business"
-        elif any(word in thought_text for word in ["art", "creative", "aesthetic", "visual"]):
-            domain = "art"
+        # 2-5. Get validated context parameters (already cleaned and validated)
+        target_audience = thought_data.get("target_audience")
+        time_period = thought_data.get("time_period")
 
-        # Extract constraints from thought data
+        # Parse comma-separated strings into lists
+        resources = self._parse_comma_separated(thought_data.get("resources"))
+        goals = self._parse_comma_separated(thought_data.get("goals"))
+
+        # 6. Constraints: Extract from thought data (existing logic)
         constraints = []
         if "constraint" in thought_data:
             constraints.append(thought_data["constraint"])
 
+        logger.debug(f"Created creativity context - Domain: {domain}, Audience: {target_audience}, "
+                    f"Time: {time_period}, Resources: {resources}, Goals: {goals}")
+
         return CreativityContext(
             domain=domain,
             constraints=constraints,
-            target_audience=None,  # Could be extracted from thought content
-            time_period=None,      # Could be extracted from thought content
-            resources=None,        # Could be extracted from thought content
-            goals=None            # Could be extracted from thought content
+            target_audience=target_audience,
+            time_period=time_period,
+            resources=resources,
+            goals=goals
         )
+
+
+
+    def _parse_comma_separated(self, value: Optional[str]) -> Optional[List[str]]:
+        """
+        Parse comma-separated string into list of strings.
+
+        Args:
+            value: Comma-separated string or None
+
+        Returns:
+            Optional[List[str]]: List of parsed strings or None if input is None/empty
+        """
+        if not value or not value.strip():
+            return None
+
+        # Split by comma, strip whitespace, and filter empty strings
+        parsed = [item.strip() for item in value.split(",") if item.strip()]
+        return parsed if parsed else None
 
     def format_thought(self, thought_data: ThoughtData) -> str:
         """
@@ -516,8 +585,9 @@ class DivergentThinkingServer:
                 perspective_type = kwargs.get("perspective_type", "inanimate_object")
                 use_six_hats = kwargs.get("use_six_hats", False)
                 seed = kwargs.get("seed")
+                context = kwargs.get("context")
                 return self.enhanced_prompt_generator.generate_enhanced_perspective_prompt(
-                    thought, perspective_type, use_six_hats, seed
+                    thought, perspective_type, use_six_hats, seed, context
                 )
 
             elif template_name == "creative_constraint":
@@ -525,8 +595,9 @@ class DivergentThinkingServer:
                 constraint = kwargs.get("constraint", "introduce an impossible element")
                 use_relaxation = kwargs.get("use_relaxation", False)
                 seed = kwargs.get("seed")
+                context = kwargs.get("context")
                 return self.enhanced_prompt_generator.generate_enhanced_constraint_prompt(
-                    thought, constraint, use_relaxation, seed
+                    thought, constraint, use_relaxation, seed, context
                 )
 
             elif template_name == "combination":
@@ -534,14 +605,16 @@ class DivergentThinkingServer:
                 thought2 = kwargs.get("thought2", "")
                 use_morphological = kwargs.get("use_morphological", False)
                 seed = kwargs.get("seed")
+                context = kwargs.get("context")
                 return self.enhanced_prompt_generator.generate_enhanced_combination_prompt(
-                    thought1, thought2, use_morphological, seed
+                    thought1, thought2, use_morphological, seed, context
                 )
 
             elif template_name == "reverse_brainstorming":
                 thought = kwargs.get("thought", "")
                 seed = kwargs.get("seed")
-                return self.enhanced_prompt_generator.generate_reverse_brainstorming_prompt(thought, seed)
+                context = kwargs.get("context")
+                return self.enhanced_prompt_generator.generate_reverse_brainstorming_prompt(thought, seed, context)
 
             
             else:
@@ -658,7 +731,8 @@ class DivergentThinkingServer:
             thought=validated_data["thought"],
             perspective_type=validated_data.get("perspective_type", "inanimate_object"),
             use_six_hats=validated_data.get("use_advanced_techniques", False),
-            seed=validated_data.get("seed")
+            seed=validated_data.get("seed"),
+            context=creativity_context
         )
 
     def _generate_constraint_step(self, validated_data: ThoughtData, creativity_context: CreativityContext) -> str:
@@ -668,7 +742,8 @@ class DivergentThinkingServer:
             thought=validated_data["thought"],
             constraint=validated_data.get("constraint", "introduce an impossible element"),
             use_relaxation=validated_data.get("use_advanced_techniques", False),
-            seed=validated_data.get("seed")
+            seed=validated_data.get("seed"),
+            context=creativity_context
         )
 
     def _generate_combine_step(self, validated_data: ThoughtData, creativity_context: CreativityContext) -> str:
@@ -688,7 +763,8 @@ class DivergentThinkingServer:
             thought1=thought1,
             thought2=thought2,
             use_morphological=validated_data.get("use_advanced_techniques", False),
-            seed=validated_data.get("seed")
+            seed=validated_data.get("seed"),
+            context=creativity_context
         )
 
     def _generate_reverse_step(self, validated_data: ThoughtData, creativity_context: CreativityContext) -> str:
@@ -696,7 +772,8 @@ class DivergentThinkingServer:
         return self.generate_prompt(
             "reverse_brainstorming",
             thought=validated_data["thought"],
-            seed=validated_data.get("seed")
+            seed=validated_data.get("seed"),
+            context=creativity_context
         )
 
     def _complete_thinking_process(self, thought_count: int) -> Dict[str, Any]:

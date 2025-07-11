@@ -77,16 +77,16 @@ class EnhancedPromptGenerator:
         seed: Optional[int] = None,
     ) -> str:
         """
-        Generate an enhanced branch generation prompt using advanced techniques.
+        Generate an enhanced branch generation prompt using advanced techniques and context.
 
         Args:
             thought: The original thought to branch from
-            context: Optional creativity context
+            context: Optional creativity context with domain, audience, time, resources, goals
             technique: Optional specific technique to use
             seed: Optional random seed for deterministic results
 
         Returns:
-            str: Enhanced branch generation prompt
+            str: Enhanced branch generation prompt with context awareness
         """
         # Set random seed if provided for deterministic results
         if seed is not None:
@@ -95,7 +95,14 @@ class EnhancedPromptGenerator:
         if technique is None:
             technique = random.choice(list(CreativityTechnique))
 
+        # Build context-aware base prompt
         base_prompt = f"Starting with the thought: '{thought}'\n\n"
+
+        # Add context information to guide creativity
+        if context:
+            context_info = self._build_context_guidance(context)
+            if context_info:
+                base_prompt += f"Context: {context_info}\n\n"
 
         if technique == CreativityTechnique.SCAMPER:
             scamper_variations = self.creativity_algorithms.apply_scamper(
@@ -130,13 +137,26 @@ class EnhancedPromptGenerator:
                 base_prompt += f"{i}. {prompt}\n"
 
         else:
-            # Fallback to traditional branching
+            # Fallback to context-aware traditional branching
             base_prompt += "Generate 3 distinct creative branches, each exploring a completely different direction:\n"
-            base_prompt += "1. A practical/functional approach\n"
+            if context and context.target_audience:
+                base_prompt += f"1. A practical approach tailored for {context.target_audience}\n"
+            else:
+                base_prompt += "1. A practical/functional approach\n"
             base_prompt += "2. An artistic/aesthetic approach\n"
             base_prompt += "3. A radical/disruptive approach\n"
 
-        base_prompt += "\nFor each direction, provide a detailed exploration that builds meaningfully on the original thought."
+        # Add context-specific guidance
+        context_guidance = ""
+        if context:
+            if context.time_period:
+                context_guidance += f" Consider the {context.time_period} timeframe."
+            if context.resources:
+                context_guidance += f" Work within these resources: {', '.join(context.resources)}."
+            if context.goals:
+                context_guidance += f" Aim to achieve: {', '.join(context.goals)}."
+
+        base_prompt += f"\nFor each direction, provide a detailed exploration that builds meaningfully on the original thought.{context_guidance}"
         return base_prompt
 
     def generate_enhanced_perspective_prompt(
@@ -145,18 +165,20 @@ class EnhancedPromptGenerator:
         perspective_type: str,
         use_six_hats: bool = False,
         seed: Optional[int] = None,
+        context: Optional[CreativityContext] = None,
     ) -> str:
         """
-        Generate an enhanced perspective shift prompt.
+        Generate an enhanced perspective shift prompt with context awareness.
 
         Args:
             thought: The original thought
             perspective_type: Type of perspective to adopt
             use_six_hats: Whether to incorporate Six Thinking Hats
             seed: Optional random seed for deterministic results
+            context: Optional creativity context for targeted perspective shifting
 
         Returns:
-            str: Enhanced perspective shift prompt
+            str: Enhanced perspective shift prompt with context awareness
         """
         # Set random seed if provided for deterministic results
         if seed is not None:
@@ -176,12 +198,39 @@ class EnhancedPromptGenerator:
             return base_prompt
 
         else:
+            # Build context-aware perspective prompt
+            base_prompt = f"View this thought from the perspective of a {perspective_type}: {thought}\n\n"
+
+            # Add context information
+            if context:
+                context_info = self._build_context_guidance(context)
+                if context_info:
+                    base_prompt += f"Context: {context_info}\n\n"
+
             perspective_templates = self.perspective_templates.get(perspective_type, [])
             if perspective_templates:
                 template = random.choice(perspective_templates)
-                return template.replace('{thought}', thought).replace('{perspective_type}', perspective_type)
+                base_prompt = template.replace('{thought}', thought).replace('{perspective_type}', perspective_type)
+
+                # Add context-specific guidance
+                if context:
+                    if context.target_audience:
+                        base_prompt += f"\n\nConsider how this perspective would specifically benefit or challenge {context.target_audience}."
+                    if context.goals:
+                        base_prompt += f"\n\nAlign your perspective with these goals: {', '.join(context.goals)}."
+
+                return base_prompt
             else:
-                return f"View this thought from the perspective of a {perspective_type}: {thought}\nProvide a radically different interpretation that reveals hidden aspects or possibilities."
+                base_prompt += "Provide a radically different interpretation that reveals hidden aspects or possibilities."
+
+                # Add context-specific guidance
+                if context:
+                    if context.domain and context.domain != "general":
+                        base_prompt += f"\n\nFocus on insights relevant to the {context.domain} domain."
+                    if context.time_period:
+                        base_prompt += f"\n\nConsider the {context.time_period} timeframe in your perspective."
+
+                return base_prompt
 
     def generate_enhanced_constraint_prompt(
         self,
@@ -189,18 +238,20 @@ class EnhancedPromptGenerator:
         constraint: str,
         use_relaxation: bool = False,
         seed: Optional[int] = None,
+        context: Optional[CreativityContext] = None,
     ) -> str:
         """
-        Generate an enhanced creative constraint prompt.
+        Generate an enhanced creative constraint prompt with context awareness.
 
         Args:
             thought: The original thought
             constraint: The constraint to apply
             use_relaxation: Whether to use constraint relaxation technique
             seed: Optional random seed for deterministic results
+            context: Optional creativity context for targeted constraint application
 
         Returns:
-            str: Enhanced constraint prompt
+            str: Enhanced constraint prompt with context awareness
         """
         # Set random seed if provided for deterministic results
         if seed is not None:
@@ -222,9 +273,30 @@ class EnhancedPromptGenerator:
             return base_prompt
 
         else:
+            # Build context-aware constraint prompt
+            base_prompt = f"Working with the thought: '{thought}'\n"
+            base_prompt += f"Apply this constraint: '{constraint}'\n\n"
+
+            # Add context information
+            if context:
+                context_info = self._build_context_guidance(context)
+                if context_info:
+                    base_prompt += f"Context: {context_info}\n\n"
+
             constraint_templates = self.constraint_templates
             template = random.choice(constraint_templates)
-            return template.replace('{thought}', thought).replace('{constraint}', constraint)
+            base_prompt = template.replace('{thought}', thought).replace('{constraint}', constraint)
+
+            # Add context-specific guidance
+            if context:
+                if context.target_audience:
+                    base_prompt += f"\n\nEnsure the constrained solution specifically serves {context.target_audience}."
+                if context.goals:
+                    base_prompt += f"\n\nAlign the constrained approach with these goals: {', '.join(context.goals)}."
+                if context.resources:
+                    base_prompt += f"\n\nWork within these available resources: {', '.join(context.resources)}."
+
+            return base_prompt
 
     def generate_enhanced_combination_prompt(
         self,
@@ -232,18 +304,20 @@ class EnhancedPromptGenerator:
         thought2: str,
         use_morphological: bool = False,
         seed: Optional[int] = None,
+        context: Optional[CreativityContext] = None,
     ) -> str:
         """
-        Generate an enhanced thought combination prompt.
+        Generate an enhanced thought combination prompt with context awareness.
 
         Args:
             thought1: First thought to combine
             thought2: Second thought to combine
             use_morphological: Whether to use morphological analysis
             seed: Optional random seed for deterministic results
+            context: Optional creativity context for targeted combination
 
         Returns:
-            str: Enhanced combination prompt
+            str: Enhanced combination prompt with context awareness
         """
         # Set random seed if provided for deterministic results
         if seed is not None:
@@ -265,22 +339,43 @@ class EnhancedPromptGenerator:
             return base_prompt
 
         else:
+            # Build context-aware combination prompt
+            base_prompt = f"Combining thoughts:\n1. '{thought1}'\n2. '{thought2}'\n\n"
+
+            # Add context information
+            if context:
+                context_info = self._build_context_guidance(context)
+                if context_info:
+                    base_prompt += f"Context: {context_info}\n\n"
+
             combination_templates = self.combination_templates
             template = random.choice(combination_templates)
-            return template.replace('{thought1}', thought1).replace('{thought2}', thought2)
+            base_prompt = template.replace('{thought1}', thought1).replace('{thought2}', thought2)
+
+            # Add context-specific guidance
+            if context:
+                if context.target_audience:
+                    base_prompt += f"\n\nEnsure the combined solution appeals to {context.target_audience}."
+                if context.domain and context.domain not in ["general", "general innovation"]:
+                    base_prompt += f"\n\nFocus the combination on applications within {context.domain}."
+                if context.time_period:
+                    base_prompt += f"\n\nConsider the {context.time_period} timeframe in your combination."
+
+            return base_prompt
 
     def generate_reverse_brainstorming_prompt(
-        self, thought: str, seed: Optional[int] = None
+        self, thought: str, seed: Optional[int] = None, context: Optional[CreativityContext] = None
     ) -> str:
         """
-        Generate a reverse brainstorming prompt.
+        Generate a reverse brainstorming prompt with context awareness.
 
         Args:
             thought: The original thought
             seed: Optional random seed for deterministic results
+            context: Optional creativity context for targeted reverse brainstorming
 
         Returns:
-            str: Reverse brainstorming prompt
+            str: Reverse brainstorming prompt with context awareness
         """
         # Set random seed if provided for deterministic results
         if seed is not None:
@@ -290,12 +385,29 @@ class EnhancedPromptGenerator:
         )
 
         base_prompt = f"Reverse brainstorming for: '{thought}'\n\n"
+
+        # Add context information
+        if context:
+            context_info = self._build_context_guidance(context)
+            if context_info:
+                base_prompt += f"Context: {context_info}\n\n"
+
         base_prompt += "First, explore how to make this idea fail:\n\n"
 
         for i, prompt in enumerate(reverse_prompts[:-1], 1):
             base_prompt += f"{i}. {prompt}\n"
 
         base_prompt += f"\n{reverse_prompts[-1]}"
+
+        # Add context-specific guidance
+        if context:
+            if context.target_audience:
+                base_prompt += f"\n\nConsider failure modes specifically relevant to {context.target_audience}."
+            if context.domain and context.domain not in ["general", "general innovation"]:
+                base_prompt += f"\n\nFocus on failure patterns common in {context.domain}."
+            if context.goals:
+                base_prompt += f"\n\nExamine how the idea might fail to achieve: {', '.join(context.goals)}."
+
         return base_prompt
 
     @staticmethod
@@ -340,3 +452,32 @@ class EnhancedPromptGenerator:
             "If '{thought1}' and '{thought2}' were two puzzle pieces from different puzzles, what new picture would emerge when they're forced to fit together?",
             "'{thought1}' and '{thought2}' are two different languages. Create a new form of communication that incorporates the unique strengths of both.",
         ]
+
+    def _build_context_guidance(self, context: CreativityContext) -> str:
+        """
+        Build context guidance string from CreativityContext.
+
+        Args:
+            context: CreativityContext with domain, audience, time, resources, goals
+
+        Returns:
+            str: Formatted context guidance string
+        """
+        guidance_parts = []
+
+        if context.domain and context.domain not in ["general", "general innovation"]:
+            guidance_parts.append(f"Field: {context.domain}")
+
+        if context.target_audience:
+            guidance_parts.append(f"Target audience: {context.target_audience}")
+
+        if context.time_period:
+            guidance_parts.append(f"Time context: {context.time_period}")
+
+        if context.resources:
+            guidance_parts.append(f"Available resources: {', '.join(context.resources)}")
+
+        if context.goals:
+            guidance_parts.append(f"Goals: {', '.join(context.goals)}")
+
+        return " | ".join(guidance_parts) if guidance_parts else ""

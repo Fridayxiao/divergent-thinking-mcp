@@ -519,22 +519,21 @@ class DivergentThinkingServer:
 
 
 
-    def _parse_comma_separated(self, value: Optional[str]) -> Optional[List[str]]:
+    def _parse_comma_separated(self, value: Optional[str]) -> List[str]:
         """
-        Parse comma-separated string into list of strings.
+        Parse comma-separated string into a list of strings, ensuring an empty list is returned for empty input.
 
         Args:
             value: Comma-separated string or None
 
         Returns:
-            Optional[List[str]]: List of parsed strings or None if input is None/empty
+            List[str]: List of parsed strings (guaranteed to be a list)
         """
         if not value or not value.strip():
-            return None
+            return []
 
         # Split by comma, strip whitespace, and filter empty strings
-        parsed = [item.strip() for item in value.split(",") if item.strip()]
-        return parsed if parsed else None
+        return [item.strip() for item in value.split(",") if item.strip()]
 
     def format_thought(self, thought_data: ThoughtData) -> str:
         """

@@ -9,6 +9,7 @@ from typing import List
 from mcp.types import Tool
 
 from .mcp_utils import MCPToolBuilder
+from .constants import VALID_DOMAINS
 
 
 def create_divergent_thinking_tools() -> List[Tool]:
@@ -70,46 +71,7 @@ def _create_unified_divergent_thinking_tool() -> Tool:
         # Interactive Context Parameters (NEW)
         "domain": MCPToolBuilder.create_string_property(
             description="REQUIRED: Specific domain/field for targeted creativity context. Must be explicitly specified by agent for precise, relevant creative outputs.",
-            enum=[
-                # Design & User Experience
-                "product design", "user interface design", "user experience design", "industrial design",
-                "graphic design", "interior design", "fashion design", "architectural design",
-
-                # Technology & Software
-                "software development", "mobile app development", "web development", "artificial intelligence",
-                "machine learning", "data science", "cybersecurity", "cloud computing", "blockchain technology",
-
-                # Business & Strategy
-                "business strategy", "digital marketing", "e-commerce", "startup ventures", "financial services",
-                "supply chain management", "human resources", "customer service", "sales optimization",
-
-                # Healthcare & Medicine
-                "medical devices", "healthcare technology", "pharmaceutical research", "mental health services",
-                "telemedicine", "health informatics", "medical education", "patient care",
-
-                # Education & Learning
-                "educational technology", "online learning", "curriculum development", "teacher training",
-                "student engagement", "learning analytics", "educational games", "skill development",
-
-                # Environment & Sustainability
-                "renewable energy", "sustainable agriculture", "environmental conservation", "green technology",
-                "waste management", "climate solutions", "eco-friendly products", "carbon reduction",
-
-                # Transportation & Mobility
-                "urban transportation", "electric vehicles", "autonomous vehicles", "public transit",
-                "logistics optimization", "smart cities", "mobility services", "transportation planning",
-
-                # Entertainment & Media
-                "content creation", "digital entertainment", "gaming industry", "social media platforms",
-                "streaming services", "virtual reality", "augmented reality", "creative arts",
-
-                # Science & Research
-                "scientific research", "laboratory automation", "research methodology", "data analysis",
-                "experimental design", "academic publishing", "research collaboration", "innovation management",
-
-                # General/Other
-                "general innovation", "cross-industry solutions", "emerging technologies", "social innovation"
-            ]
+            enum=list(VALID_DOMAINS)
         ),
         "target_audience": MCPToolBuilder.create_string_property(
             description="Optional: Target audience for user-centered creative solutions. Specify who will use/benefit from the solution (e.g., 'remote students', 'elderly users', 'small business owners', 'healthcare professionals')",

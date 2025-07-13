@@ -229,8 +229,8 @@ class TestCreativityContextCreation:
         assert context.domain == "healthcare technology"
         assert context.target_audience is None
         assert context.time_period is None
-        assert context.resources is None
-        assert context.goals is None
+        assert context.resources == []
+        assert context.goals == []
         assert context.constraints == []
 
 
@@ -360,8 +360,8 @@ class TestErrorHandlingAndEdgeCases:
         """Test edge cases in comma-separated parameter parsing."""
         # Empty strings and whitespace handling
         test_cases = [
-            ("", None),
-            ("   ", None),
+            ("", []),
+            ("   ", []),
             ("item1, , item3", ["item1", "item3"]),  # Empty item filtered out
             ("  item1  ,  item2  ", ["item1", "item2"]),  # Whitespace stripped
             ("single_item", ["single_item"]),  # Single item

@@ -3,47 +3,17 @@
 An MCP (Model Context Protocol) server that promotes divergent and creative thinking patterns for creation - the Supplement of sequential logical thinking.
 一个MCP（模型上下文协议）服务器，促进创造性思维模式，是顺序逻辑思维的补充。
 
-## 🎯 LATEST ENHANCEMENT - Version 0.2.1
-
-**🚀 NEW: Domain-Aware Creativity Intelligence - Professional-Grade Creative Outputs**
-
-Major enhancement transforming the MCP server from generic random-based generators to intelligent, context-sensitive creative assistants.
-
-- **Before**: Generic outputs like "How does 'butterfly' relate to cybersecurity?"
-- **After**: Professional outputs like "How does 'encryption' relate to network security in cybersecurity applications?"
-- **Impact**: 90%+ domain relevance, 95%+ logical coherence, 85%+ professional applicability
-
-## 🚨 BREAKING CHANGES - Version 0.2.0
-
-**⚠️ CRITICAL: The `domain` parameter is now REQUIRED for all creativity operations.**
-
-This is a major breaking change. All existing usage must be updated to include an explicit domain parameter.
-
-- **Before**: Domain was optional with automatic extraction
-- **After**: Domain is **REQUIRED** and must be explicitly specified from 78+ multi-word options
-- **Migration**: See [BREAKING_CHANGES.md](./BREAKING_CHANGES.md) for complete migration guide
-
-**Quick Fix Example:**
-
-```json
-// ❌ OLD (will fail)
-{"thought": "Create a mobile app", "thinking_method": "structured_process"}
-
-// ✅ NEW (required)
-{"thought": "Create a mobile app", "thinking_method": "structured_process", "domain": "mobile app development"}
-```
-
 ## 🎨 Philosophy / 设计理念
 
-While other thinking follows logical progressions, this MCP server embraces divergent
-传统思维遵循逻辑进展，而此MCP服务器拥抱发散思维
+Designed to provide creative inspiration for both humans and AI agents, complementing the structured nature of sequential thinking.
+旨在为人类与AI智能体提供创意与灵感，作为对传统顺序性思维的补充。
 
 ## 🛠️ Tools / 工具
 
 ### Unified Divergent Thinking Tool / 统一发散思维工具
 
-This MCP server provides a **single comprehensive tool** that offers 6 powerful creativity methods through one unified interface, eliminating confusion and cognitive overload.
-此MCP服务器提供**单一综合工具**，通过统一界面提供6种强大的创意方法，消除混乱和认知负担。
+This MCP server provides a **single comprehensive tool** that offers 6 powerful creativity methods through one unified interface, aiming to reduce confusion and cognitive overload.
+此MCP服务器提供**单一综合工具**，通过统一界面提供6种强大的创意方法，旨在减轻混乱和认知负担。
 
 #### **`divergent_thinking`** - Comprehensive Creative Thinking Tool / 综合创意思维工具
 
@@ -87,34 +57,18 @@ A unified tool providing access to 6 proven creativity methodologies through par
 - **🎲 Deterministic Results**: Optional seed parameter for reproducible creative outputs
   确定性结果：可选种子参数用于可重现的创意输出
 
-## 🚀 Installation & Usage / 安装与使用
-
-### Installation
-
-```bash
-# 1. using uv
-uv tool install divergent-thinking-mcp --index https://pypi.org/simple
-
-# 2. Clone the project
-# 克隆或创建项目
-git clone https://github.com/Fridayxiao/divergent-thinking-mcp.git
-cd divergent-thinking-mcp
-# install  with uv
-uv tool install .
-
-```
 
 ## 📝 Configuration / 配置
 
-Add to your MCP client configuration:
-添加到您的MCP客户端配置：
+Add to your MCP client configuration:(uv needed)
+添加到您的MCP客户端配置：(需要uv)
 
 ```json
 {
   "mcpServers": {
     "divergent-thinking": {
-      "command": "uv",
-      "args": ["run", "divergent-thinking-mcp"],
+      "command": "uvx",
+      "args": ["divergent-thinking-mcp"],
     }
   }
 }

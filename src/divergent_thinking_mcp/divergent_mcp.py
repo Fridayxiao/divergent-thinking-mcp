@@ -21,7 +21,7 @@ Key Features:
 - Context-aware prompt generation across all creativity methods
 
 Author: Fridayxiao
-Version: 0.2.1
+Version: 0.2.2
 License: MIT
 """
 
@@ -245,7 +245,7 @@ async def main() -> None:
         # Initialize server configuration
         config = MCPServerConfig(
             server_name="divergent-thinking",
-            server_version="0.2.0",
+            server_version="0.2.2",
             enable_debug_logging=False
         )
 

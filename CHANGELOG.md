@@ -4,6 +4,16 @@ All notable changes to the Divergent Thinking MCP Server will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.2] - 2025-07-14
+
+### Refactored
+- **Centralized Static Data**: Moved the list of valid domains and static data for creativity algorithms to a new `constants.py` file. This establishes a single source of truth, improving maintainability and separating data from logic.
+- **Improved Code Clarity**: The logic in `creativity_algorithms.py` is now cleaner and easier to read after relocating static data.
+
+### Fixed
+- **Improved Type Safety**: The `_parse_comma_separated` method in `divergent_mcp.py` now consistently returns a list, preventing potential errors from `None` values.
+- **Test Suite Correction**: Updated tests to align with the enhanced type safety, ensuring the test suite remains robust and passes successfully.
+
 ## [0.2.1] - 2025-07-11
 
 ### 🎯 MAJOR FEATURE ENHANCEMENT

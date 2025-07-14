@@ -9,7 +9,7 @@ creativity, comprehensive context parameters (audience, time, resources, goals),
 and 6 proven creativity methodologies through a unified interface.
 """
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 __author__ = "Fridayxiao"
 
 from .divergent_mcp import app, main

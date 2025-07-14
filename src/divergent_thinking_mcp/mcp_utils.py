@@ -294,7 +294,7 @@ class MCPServerConfig:
     def __init__(
         self,
         server_name: str = "divergent-thinking",
-        server_version: str = "0.1.0",
+        server_version: str = "0.2.2",
         max_thought_length: int = 5000,
         max_constraint_length: int = 500,
         max_thoughts_per_sequence: int = 1000,

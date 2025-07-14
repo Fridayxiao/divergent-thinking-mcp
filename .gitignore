@@ -36,6 +36,7 @@ env/
 .vscode/
 *.swp
 *.swo
+.augment
 
 # OS-specific files
 .DS_Store

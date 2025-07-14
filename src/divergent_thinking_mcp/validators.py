@@ -8,6 +8,7 @@ of input data used in divergent thinking operations.
 import re
 from typing import Any, Dict, List, Optional, Set
 from .exceptions import ValidationError
+from .constants import VALID_DOMAINS
 
 
 class ThoughtValidator:
@@ -49,46 +50,7 @@ class ThoughtValidator:
     MAX_GOALS_LENGTH = 500
 
     # Valid domain values (multi-word domains)
-    VALID_DOMAINS: Set[str] = {
-        # Design & User Experience
-        "product design", "user interface design", "user experience design", "industrial design",
-        "graphic design", "interior design", "fashion design", "architectural design",
-
-        # Technology & Software
-        "software development", "mobile app development", "web development", "artificial intelligence",
-        "machine learning", "data science", "cybersecurity", "cloud computing", "blockchain technology",
-
-        # Business & Strategy
-        "business strategy", "digital marketing", "e-commerce", "startup ventures", "financial services",
-        "supply chain management", "human resources", "customer service", "sales optimization",
-
-        # Healthcare & Medicine
-        "medical devices", "healthcare technology", "pharmaceutical research", "mental health services",
-        "telemedicine", "health informatics", "medical education", "patient care",
-
-        # Education & Learning
-        "educational technology", "online learning", "curriculum development", "teacher training",
-        "student engagement", "learning analytics", "educational games", "skill development",
-
-        # Environment & Sustainability
-        "renewable energy", "sustainable agriculture", "environmental conservation", "green technology",
-        "waste management", "climate solutions", "eco-friendly products", "carbon reduction",
-
-        # Transportation & Mobility
-        "urban transportation", "electric vehicles", "autonomous vehicles", "public transit",
-        "logistics optimization", "smart cities", "mobility services", "transportation planning",
-
-        # Entertainment & Media
-        "content creation", "digital entertainment", "gaming industry", "social media platforms",
-        "streaming services", "virtual reality", "augmented reality", "creative arts",
-
-        # Science & Research
-        "scientific research", "laboratory automation", "research methodology", "data analysis",
-        "experimental design", "academic publishing", "research collaboration", "innovation management",
-
-        # General/Other
-        "general innovation", "cross-industry solutions", "emerging technologies", "social innovation"
-    }
+    VALID_DOMAINS: Set[str] = VALID_DOMAINS
     
     @classmethod
     def validate_required_fields(cls, data: Dict[str, Any], required_fields: List[str]) -> None:

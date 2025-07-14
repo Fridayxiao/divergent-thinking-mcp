@@ -1,0 +1,13 @@
+refactor: Centralize static data and improve maintainability
+
+This commit refactors the project to improve maintainability and robustness by centralizing static data and enhancing type safety.
+
+Key changes:
+
+- **Centralized Domain List:** The list of valid domains, previously duplicated in `validators.py` and `tool_definitions.py`, has been moved to a single `constants.py` file. This creates a single source of truth and prevents inconsistencies.
+
+- **Separated Data from Logic:** All static data for creativity algorithms (e.g., random words, analogies, domain keywords) has been moved from `creativity_algorithms.py` to the new `constants.py` file. This makes the core algorithm logic cleaner and easier to read.
+
+- **Improved Type Safety:** The `_parse_comma_separated` method in `divergent_mcp.py` was updated to always return a list, preventing potential errors from `None` values.
+
+- **Test Suite Correction:** The tests that failed due to the type safety improvement were updated to align with the new, more robust implementation, ensuring the entire test suite passes.

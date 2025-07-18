@@ -345,7 +345,7 @@ class ThoughtValidator:
             raise ValidationError(
                 f"domain must be one of the valid multi-word domains. "
                 f"Received: '{cleaned_domain}'. "
-                f"Valid options include: 'product design', 'mobile app development', 'healthcare technology', etc.",
+                f"Valid options include: 'artificial intelligence systems', 'web application development', 'digital product strategy', etc.",
                 field_name="domain",
                 field_value=cleaned_domain
             )

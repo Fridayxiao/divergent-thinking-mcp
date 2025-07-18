@@ -28,7 +28,7 @@ class EnhancedPromptGenerator:
     _template_cache: Dict[str, Any] = {}
     _cache_initialized: bool = False
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.creativity_algorithms = CreativityAlgorithms()
 
         # Initialize templates using class-level cache

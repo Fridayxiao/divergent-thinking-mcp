@@ -20,7 +20,7 @@ class TestDomainValidationPerformance:
     
     def test_single_domain_validation_speed(self):
         """Test speed of validating a single domain."""
-        domain = "artificial intelligence"
+        domain = "artificial intelligence systems"
         
         # Warm up
         for _ in range(10):
@@ -72,8 +72,8 @@ class TestDomainValidationPerformance:
             "invalid_domain",
             "technology",
             "random text",
-            "PRODUCT DESIGN",
-            "mobile development"
+            "ARTIFICIAL INTELLIGENCE SYSTEMS",
+            "web development"
         ]
         
         # Benchmark invalid domain validation
@@ -107,7 +107,7 @@ class TestContextCreationPerformance:
     
     def test_minimal_context_creation_speed(self):
         """Test speed of creating context with minimal data."""
-        thought_data = {"domain": "product design"}
+        thought_data = {"domain": "digital product strategy"}
         
         # Warm up
         for _ in range(10):
@@ -122,7 +122,7 @@ class TestContextCreationPerformance:
             times.append(end - start)
             
             # Verify context is created correctly
-            assert context.domain == "product design"
+            assert context.domain == "digital product strategy"
         
         avg_time = statistics.mean(times)
         max_time = max(times)
@@ -136,7 +136,7 @@ class TestContextCreationPerformance:
     def test_full_context_creation_speed(self):
         """Test speed of creating context with all parameters."""
         thought_data = {
-            "domain": "artificial intelligence",
+            "domain": "artificial intelligence systems",
             "target_audience": "machine learning researchers",
             "time_period": "next 5 years",
             "resources": "high-performance computing, large datasets, expert team",
@@ -157,7 +157,7 @@ class TestContextCreationPerformance:
             times.append(end - start)
             
             # Verify context is created correctly
-            assert context.domain == "artificial intelligence"
+            assert context.domain == "artificial intelligence systems"
             assert len(context.resources) == 3
             assert len(context.goals) == 3
         
@@ -173,9 +173,9 @@ class TestContextCreationPerformance:
     def test_context_creation_with_different_domains(self):
         """Test context creation performance across different domains."""
         domains = [
-            "product design", "artificial intelligence", "healthcare technology",
-            "sustainable agriculture", "mobile app development", "cybersecurity",
-            "e-commerce", "renewable energy", "educational technology", "urban transportation"
+            "digital product strategy", "artificial intelligence systems", "web application development",
+            "machine learning algorithms", "cybersecurity architecture", "distributed systems design",
+            "devops automation systems", "microservices architecture", "database systems optimization", "scalable system architecture"
         ]
         
         times_by_domain = {}
@@ -232,7 +232,7 @@ class TestValidationPerformance:
         thought_data = {
             "thought": "Create an innovative AI-powered healthcare solution",
             "thinking_method": "structured_process",
-            "domain": "healthcare technology",
+            "domain": "artificial intelligence systems",
             "target_audience": "medical professionals",
             "time_period": "next 3 years",
             "resources": "cloud infrastructure, medical datasets, expert team",
@@ -255,7 +255,7 @@ class TestValidationPerformance:
             times.append(end - start)
             
             # Verify validation worked
-            assert validated_data["domain"] == "healthcare technology"
+            assert validated_data["domain"] == "artificial intelligence systems"
             assert validated_data["thought"] == thought_data["thought"]
         
         avg_time = statistics.mean(times)

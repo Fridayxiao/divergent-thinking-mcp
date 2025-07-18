@@ -30,16 +30,16 @@ class TestRequiredDomainValidation:
         assert "thinking_method" in divergent_tool.inputSchema["required"]
     
     def test_validate_domain_success(self):
-        """Test successful domain validation with valid multi-word domains."""
+        """Test successful domain validation with valid specialized domains."""
         valid_domains = [
-            "product design",
-            "mobile app development", 
-            "healthcare technology",
-            "sustainable agriculture",
-            "artificial intelligence",
-            "user experience design"
+            "artificial intelligence systems",
+            "web application development",
+            "digital product strategy",
+            "devops automation systems",
+            "machine learning algorithms",
+            "distributed systems design"
         ]
-        
+
         for domain in valid_domains:
             result = ThoughtValidator.validate_domain(domain)
             assert result == domain
@@ -242,7 +242,7 @@ class TestIntegrationWithThinkingMethods:
         self.server = DivergentThinkingServer()
         self.base_thought_data = {
             "thought": "Create an innovative solution",
-            "domain": "artificial intelligence",
+            "domain": "artificial intelligence systems",
             "target_audience": "developers",
             "thoughtNumber": 1,
             "totalThoughts": 1,
@@ -267,11 +267,11 @@ class TestIntegrationWithThinkingMethods:
         
         # This should not raise any validation errors
         validated_data = self.server.validate_thought_data(thought_data)
-        assert validated_data["domain"] == "artificial intelligence"
-        
+        assert validated_data["domain"] == "artificial intelligence systems"
+
         # Context creation should work
         context = self.server.create_creativity_context(validated_data)
-        assert context.domain == "artificial intelligence"
+        assert context.domain == "artificial intelligence systems"
     
     def test_structured_process_domain_validation(self):
         """Test structured process specifically validates domain."""
@@ -309,19 +309,21 @@ class TestDomainEnumCompleteness:
         assert len(validator_domains) == 78
     
     def test_domain_categories_coverage(self):
-        """Test that domains cover expected categories."""
+        """Test that domains cover expected specialized categories."""
         domains = ThoughtValidator.VALID_DOMAINS
-        
-        # Check for key categories (at least one domain from each)
-        design_domains = [d for d in domains if "design" in d]
-        tech_domains = [d for d in domains if any(tech in d for tech in ["technology", "software", "app", "web", "artificial", "machine", "data"])]
-        business_domains = [d for d in domains if any(biz in d for biz in ["business", "marketing", "commerce", "financial", "sales"])]
-        health_domains = [d for d in domains if any(health in d for health in ["medical", "healthcare", "health", "pharmaceutical"])]
-        
-        assert len(design_domains) >= 5, f"Expected at least 5 design domains, got {len(design_domains)}"
-        assert len(tech_domains) >= 10, f"Expected at least 10 tech domains, got {len(tech_domains)}"
-        assert len(business_domains) >= 5, f"Expected at least 5 business domains, got {len(business_domains)}"
-        assert len(health_domains) >= 5, f"Expected at least 5 health domains, got {len(health_domains)}"
+
+        # Check for specialized categories (at least one domain from each)
+        ai_domains = [d for d in domains if any(ai in d for ai in ["artificial intelligence", "machine learning", "deep learning", "neural", "ai"])]
+        web_domains = [d for d in domains if any(web in d for web in ["web", "frontend", "backend", "api", "microservices"])]
+        cs_domains = [d for d in domains if any(cs in d for cs in ["distributed", "database", "systems", "cybersecurity", "cloud"])]
+        product_domains = [d for d in domains if any(prod in d for prod in ["product", "agile", "user experience"])]
+        engineering_domains = [d for d in domains if any(eng in d for eng in ["devops", "infrastructure", "engineering", "monitoring"])]
+
+        assert len(ai_domains) >= 10, f"Expected at least 10 AI domains, got {len(ai_domains)}"
+        assert len(web_domains) >= 10, f"Expected at least 10 web domains, got {len(web_domains)}"
+        assert len(cs_domains) >= 10, f"Expected at least 10 CS domains, got {len(cs_domains)}"
+        assert len(product_domains) >= 5, f"Expected at least 5 product domains, got {len(product_domains)}"
+        assert len(engineering_domains) >= 5, f"Expected at least 5 engineering domains, got {len(engineering_domains)}"
 
 
 class TestErrorHandlingAndEdgeCases:
@@ -334,19 +336,19 @@ class TestErrorHandlingAndEdgeCases:
     def test_domain_validation_with_whitespace(self):
         """Test domain validation handles whitespace correctly."""
         # Leading/trailing whitespace should be stripped and validated
-        domain_with_spaces = "  product design  "
+        domain_with_spaces = "  artificial intelligence systems  "
         result = ThoughtValidator.validate_domain(domain_with_spaces)
-        assert result == "product design"
+        assert result == "artificial intelligence systems"
 
         # Internal whitespace should be preserved
-        domain_internal_spaces = "mobile app development"
+        domain_internal_spaces = "web application development"
         result = ThoughtValidator.validate_domain(domain_internal_spaces)
-        assert result == "mobile app development"
+        assert result == "web application development"
 
     def test_context_parameter_parsing(self):
         """Test comma-separated context parameter parsing."""
         thought_data = {
-            "domain": "e-commerce",
+            "domain": "digital product strategy",
             "resources": "cloud computing, mobile devices, limited budget",
             "goals": "improve engagement, reduce costs, increase accessibility"
         }
@@ -380,17 +382,17 @@ class TestErrorHandlingAndEdgeCases:
         assert error.field_name == "domain"
         assert error.field_value == "invalid_domain"
         assert "valid multi-word domains" in str(error)
-        assert "product design" in str(error)  # Example domains mentioned
-        assert "mobile app development" in str(error)
+        assert "artificial intelligence systems" in str(error)  # Example domains mentioned
+        assert "web application development" in str(error)
 
     def test_domain_case_sensitivity(self):
         """Test that domain validation is case-sensitive."""
         # Exact case should work
-        assert ThoughtValidator.validate_domain("product design") == "product design"
+        assert ThoughtValidator.validate_domain("artificial intelligence systems") == "artificial intelligence systems"
 
         # Wrong case should fail
         with pytest.raises(ValidationError):
-            ThoughtValidator.validate_domain("Product Design")
+            ThoughtValidator.validate_domain("Artificial Intelligence Systems")
 
         with pytest.raises(ValidationError):
             ThoughtValidator.validate_domain("PRODUCT DESIGN")

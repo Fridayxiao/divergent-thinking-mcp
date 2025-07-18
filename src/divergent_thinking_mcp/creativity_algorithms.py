@@ -18,6 +18,7 @@ from .constants import (
     DOMAIN_KEYWORDS,
     DOMAIN_CREATIVITY_WORDS,
 )
+from .domain_data_manager import domain_data_manager
 
 logger = logging.getLogger(__name__)
 
@@ -53,12 +54,16 @@ class CreativityAlgorithms:
     to generate innovative ideas and solutions.
     """
     
-    def __init__(self):
+    def __init__(self) -> None:
+        """Initialize the creativity algorithms with required data."""
         self.random_words = RANDOM_WORDS
         self.analogical_domains = ANALOGICAL_DOMAINS
         self.biomimicry_examples = BIOMIMICRY_EXAMPLES
         self.domain_keywords = DOMAIN_KEYWORDS
         self.domain_creativity_words = DOMAIN_CREATIVITY_WORDS
+
+        # Cache for frequently accessed domain data to improve performance
+        self._domain_cache = {}
 
     def _safe_random_sample(self, items: List[Any], size: int) -> List[Any]:
         """
@@ -95,46 +100,47 @@ class CreativityAlgorithms:
         Returns:
             List[str]: Contextually relevant words
         """
-        domain_words = self.domain_creativity_words.get(domain, {})
         selected_words = []
 
-        # Priority 1: Domain-specific words from requested category
-        if category in domain_words:
-            available_words = domain_words[category]
+        # Priority 1: Domain-specific words from requested category using domain data manager
+        available_words = domain_data_manager.get_creativity_words(domain, category)
+        if available_words:
             selected_count = min(count, len(available_words))
             selected_words.extend(self._safe_random_sample(available_words, selected_count))
 
         # Priority 2: Context-aware selection from other categories
         remaining_count = count - len(selected_words)
-        if remaining_count > 0 and context and domain_words:
+        if remaining_count > 0 and context:
             # If goals specified, add technique-related words
-            if context.goals and "techniques" in domain_words and category != "techniques":
-                technique_words = domain_words["techniques"]
-                technique_count = min(remaining_count // 2, len(technique_words))
-                if technique_count > 0:
-                    selected_words.extend(self._safe_random_sample(technique_words, technique_count))
+            if context.goals and category != "techniques":
+                technique_words = domain_data_manager.get_creativity_words(domain, "techniques")
+                if technique_words:
+                    technique_count = min(remaining_count // 2, len(technique_words))
+                    if technique_count > 0:
+                        selected_words.extend(self._safe_random_sample(technique_words, technique_count))
 
             # If constraints mentioned, add challenge-related words
             remaining_count = count - len(selected_words)
-            if remaining_count > 0 and context.constraints and "challenges" in domain_words and category != "challenges":
-                challenge_words = domain_words["challenges"]
-                challenge_count = min(remaining_count, len(challenge_words))
-                if challenge_count > 0:
-                    selected_words.extend(self._safe_random_sample(challenge_words, challenge_count))
+            if remaining_count > 0 and context.constraints and category != "challenges":
+                challenge_words = domain_data_manager.get_creativity_words(domain, "challenges")
+                if challenge_words:
+                    challenge_count = min(remaining_count, len(challenge_words))
+                    if challenge_count > 0:
+                        selected_words.extend(self._safe_random_sample(challenge_words, challenge_count))
 
         # Priority 3: Fallback to generic words if still needed
         remaining_count = count - len(selected_words)
         if remaining_count > 0:
             # Try other categories from the same domain first
-            if domain_words:
-                all_domain_words = []
-                for cat, words in domain_words.items():
-                    if cat != category:  # Don't repeat the primary category
-                        all_domain_words.extend(words)
+            all_domain_words = []
+            for cat in ["core_concepts", "techniques", "metaphors", "challenges", "applications"]:
+                if cat != category:  # Don't repeat the primary category
+                    words = domain_data_manager.get_creativity_words(domain, cat)
+                    all_domain_words.extend(words)
 
-                if all_domain_words:
-                    fallback_count = min(remaining_count, len(all_domain_words))
-                    selected_words.extend(self._safe_random_sample(all_domain_words, fallback_count))
+            if all_domain_words:
+                fallback_count = min(remaining_count, len(all_domain_words))
+                selected_words.extend(self._safe_random_sample(all_domain_words, fallback_count))
 
             # Final fallback to generic random words
             remaining_count = count - len(selected_words)
@@ -292,51 +298,9 @@ class CreativityAlgorithms:
         Returns:
             Dict[str, List[str]]: Mapping of analogy categories to examples
         """
-        domain_analogy_map = {
-            "artificial intelligence": {
-                "biological_systems": ["neural networks", "immune systems", "evolutionary processes", "swarm behavior", "brain plasticity"],
-                "cognitive_processes": ["learning patterns", "memory formation", "pattern recognition", "decision making", "problem solving"],
-                "mathematical_concepts": ["optimization algorithms", "statistical inference", "graph theory", "probability models", "linear algebra"]
-            },
-            "healthcare technology": {
-                "biological_systems": ["immune response", "healing processes", "diagnostic mechanisms", "homeostasis", "cellular repair"],
-                "engineering_systems": ["monitoring systems", "feedback loops", "quality control", "system integration", "fault detection"],
-                "communication_systems": ["information networks", "signal processing", "data transmission", "protocol standards", "error correction"]
-            },
-            "sustainable agriculture": {
-                "natural_ecosystems": ["nutrient cycling", "biodiversity", "symbiotic relationships", "succession patterns", "resource efficiency"],
-                "engineering_systems": ["closed-loop systems", "resource optimization", "automation", "sensor networks", "precision control"],
-                "economic_systems": ["supply chains", "market dynamics", "resource allocation", "risk management", "value creation"]
-            },
-            "cybersecurity": {
-                "military_defense": ["perimeter defense", "intelligence gathering", "threat assessment", "strategic planning", "rapid response"],
-                "biological_immunity": ["pathogen detection", "immune response", "memory cells", "adaptive immunity", "barrier protection"],
-                "physical_security": ["access control", "surveillance systems", "alarm systems", "security protocols", "incident response"]
-            },
-            "product design": {
-                "natural_forms": ["biomimetic structures", "efficient shapes", "adaptive mechanisms", "material properties", "functional aesthetics"],
-                "architectural_principles": ["form follows function", "structural integrity", "space utilization", "user flow", "environmental integration"],
-                "artistic_composition": ["visual balance", "proportion", "harmony", "contrast", "focal points"]
-            },
-            "business strategy": {
-                "military_strategy": ["competitive intelligence", "strategic positioning", "resource allocation", "tactical execution", "alliance building"],
-                "game_theory": ["strategic moves", "competitive dynamics", "win-win scenarios", "risk assessment", "decision trees"],
-                "ecosystem_dynamics": ["competitive advantage", "niche specialization", "resource competition", "adaptation", "survival strategies"]
-            },
-            "renewable energy": {
-                "natural_processes": ["photosynthesis", "wind patterns", "water cycles", "geothermal processes", "tidal forces"],
-                "energy_conversion": ["mechanical systems", "electrical generation", "energy storage", "power distribution", "efficiency optimization"],
-                "economic_models": ["resource economics", "investment strategies", "market dynamics", "cost optimization", "value creation"]
-            },
-            "educational technology": {
-                "cognitive_science": ["learning theories", "memory formation", "attention mechanisms", "motivation psychology", "skill acquisition"],
-                "communication_systems": ["information delivery", "feedback loops", "interactive dialogue", "content adaptation", "user engagement"],
-                "game_design": ["progression systems", "reward mechanisms", "challenge scaling", "user engagement", "achievement systems"]
-            }
-        }
+        # Use domain data manager for consolidated access
+        return domain_data_manager.get_domain_analogies(domain)
 
-        # Return domain-specific analogies or fall back to generic ones
-        return domain_analogy_map.get(domain, self.analogical_domains)
 
     def apply_analogical_thinking(self, idea: str, domain: Optional[str] = None,
                                  context: Optional[CreativityContext] = None) -> List[str]:
@@ -380,67 +344,9 @@ class CreativityAlgorithms:
         Returns:
             List[Dict[str, str]]: List of biomimicry examples with organism, mechanism, and property
         """
-        domain_biomimicry_map = {
-            "artificial intelligence": [
-                {"organism": "neural networks", "mechanism": "parallel information processing like brain neurons", "property": "distributed intelligence"},
-                {"organism": "ant colonies", "mechanism": "swarm optimization for collective problem solving", "property": "emergent intelligence"},
-                {"organism": "immune system", "mechanism": "pattern recognition and adaptive memory", "property": "learning from experience"},
-                {"organism": "octopus camouflage", "mechanism": "real-time pattern adaptation", "property": "dynamic response systems"},
-                {"organism": "bird flocking", "mechanism": "simple rules creating complex behavior", "property": "emergent coordination"}
-            ],
-            "renewable energy": [
-                {"organism": "photosynthesis", "mechanism": "converts sunlight to chemical energy efficiently", "property": "solar energy conversion"},
-                {"organism": "wind dispersal seeds", "mechanism": "captures air currents for movement", "property": "wind energy harvesting"},
-                {"organism": "thermoregulation", "mechanism": "maintains optimal temperature with minimal energy", "property": "energy conservation"},
-                {"organism": "bioluminescence", "mechanism": "produces light through chemical reactions", "property": "efficient light generation"},
-                {"organism": "leaf structure", "mechanism": "maximizes surface area for energy capture", "property": "energy collection optimization"}
-            ],
-            "healthcare technology": [
-                {"organism": "immune system", "mechanism": "detects and responds to threats automatically", "property": "automated health monitoring"},
-                {"organism": "blood clotting", "mechanism": "self-healing response to injury", "property": "rapid repair mechanisms"},
-                {"organism": "echolocation", "mechanism": "uses sound waves for internal imaging", "property": "non-invasive diagnostics"},
-                {"organism": "spider silk", "mechanism": "combines strength and flexibility", "property": "biocompatible materials"},
-                {"organism": "cellular repair", "mechanism": "targeted healing at microscopic level", "property": "precision medicine"}
-            ],
-            "cybersecurity": [
-                {"organism": "immune system", "mechanism": "distinguishes self from non-self", "property": "threat identification"},
-                {"organism": "herd immunity", "mechanism": "collective protection through individual immunity", "property": "network security"},
-                {"organism": "camouflage", "mechanism": "blends with environment to avoid detection", "property": "stealth protection"},
-                {"organism": "warning signals", "mechanism": "alerts others to danger", "property": "threat communication"},
-                {"organism": "territorial behavior", "mechanism": "defends boundaries from intruders", "property": "perimeter defense"}
-            ],
-            "product design": [
-                {"organism": "honeycomb structure", "mechanism": "maximizes storage with minimal material", "property": "structural efficiency"},
-                {"organism": "gecko feet", "mechanism": "reversible adhesion without chemicals", "property": "smart attachment"},
-                {"organism": "bird wing design", "mechanism": "optimized shape for efficient movement", "property": "aerodynamic efficiency"},
-                {"organism": "cactus spines", "mechanism": "collects water from air", "property": "resource harvesting"},
-                {"organism": "butterfly wings", "mechanism": "creates colors through structure not pigment", "property": "sustainable aesthetics"}
-            ],
-            "sustainable agriculture": [
-                {"organism": "mycorrhizal networks", "mechanism": "fungi connect plant roots for nutrient sharing", "property": "resource distribution"},
-                {"organism": "nitrogen fixation", "mechanism": "bacteria convert atmospheric nitrogen to plant nutrients", "property": "natural fertilization"},
-                {"organism": "companion planting", "mechanism": "different plants support each other's growth", "property": "symbiotic relationships"},
-                {"organism": "forest succession", "mechanism": "gradual ecosystem development over time", "property": "sustainable regeneration"},
-                {"organism": "pollinator networks", "mechanism": "insects facilitate plant reproduction", "property": "ecosystem services"}
-            ],
-            "urban transportation": [
-                {"organism": "ant trails", "mechanism": "optimizes paths through pheromone feedback", "property": "traffic flow optimization"},
-                {"organism": "bird migration", "mechanism": "efficient long-distance travel in groups", "property": "coordinated movement"},
-                {"organism": "slime mold networks", "mechanism": "finds shortest paths between resources", "property": "route optimization"},
-                {"organism": "schooling fish", "mechanism": "reduces energy through coordinated swimming", "property": "collective efficiency"},
-                {"organism": "honeybee waggle dance", "mechanism": "communicates location information", "property": "navigation systems"}
-            ],
-            "business strategy": [
-                {"organism": "ecosystem dynamics", "mechanism": "species adapt to fill available niches", "property": "market positioning"},
-                {"organism": "predator-prey cycles", "mechanism": "populations balance through feedback loops", "property": "competitive dynamics"},
-                {"organism": "symbiotic relationships", "mechanism": "mutual benefit through cooperation", "property": "strategic partnerships"},
-                {"organism": "territorial behavior", "mechanism": "defends resources from competitors", "property": "market protection"},
-                {"organism": "migration patterns", "mechanism": "moves to exploit seasonal opportunities", "property": "market timing"}
-            ]
-        }
+        # Use domain data manager for consolidated access
+        return domain_data_manager.get_domain_biomimicry(domain)
 
-        # Return domain-specific biomimicry examples or fall back to generic ones
-        return domain_biomimicry_map.get(domain, self.biomimicry_examples)
 
     def apply_reverse_brainstorming(self, idea: str) -> List[str]:
         """
@@ -472,114 +378,9 @@ class CreativityAlgorithms:
         Returns:
             Dict[str, List[str]]: Domain-specific prompts for each thinking hat
         """
-        domain_perspectives = {
-            "artificial intelligence": {
-                "factual": [
-                    f"What AI performance metrics validate this approach?",
-                    f"What training data requirements exist?",
-                    f"What computational resources are needed?",
-                    f"What accuracy benchmarks apply?"
-                ],
-                "emotional": [
-                    f"How do users feel about AI making this decision?",
-                    f"What trust concerns arise with this AI system?",
-                    f"How does this impact human-AI interaction?",
-                    f"What ethical concerns do stakeholders have?"
-                ],
-                "critical": [
-                    f"What bias risks exist in this AI system?",
-                    f"How could this AI system fail or be misused?",
-                    f"What privacy concerns arise?",
-                    f"What happens when the AI encounters edge cases?"
-                ],
-                "positive": [
-                    f"How could this AI system improve decision-making?",
-                    f"What efficiency gains are possible?",
-                    f"How could this democratize AI capabilities?",
-                    f"What new possibilities does this AI enable?"
-                ]
-            },
-            "healthcare technology": {
-                "factual": [
-                    f"What clinical evidence supports this approach?",
-                    f"What regulatory approvals are required?",
-                    f"What patient safety data exists?",
-                    f"What cost-effectiveness studies apply?"
-                ],
-                "emotional": [
-                    f"How do patients feel about this technology?",
-                    f"What concerns do healthcare providers have?",
-                    f"How does this impact patient-provider relationships?",
-                    f"What anxiety or comfort does this create?"
-                ],
-                "critical": [
-                    f"What patient safety risks exist?",
-                    f"How could this technology fail in critical situations?",
-                    f"What privacy concerns arise with health data?",
-                    f"What happens if the technology malfunctions?"
-                ],
-                "positive": [
-                    f"How could this improve patient outcomes?",
-                    f"What healthcare access benefits are possible?",
-                    f"How could this reduce healthcare costs?",
-                    f"What quality of life improvements result?"
-                ]
-            },
-            "cybersecurity": {
-                "factual": [
-                    f"What threat vectors does this address?",
-                    f"What security standards does this meet?",
-                    f"What attack success rates exist?",
-                    f"What compliance requirements apply?"
-                ],
-                "emotional": [
-                    f"How do users feel about security vs. convenience?",
-                    f"What privacy concerns do stakeholders have?",
-                    f"How does this impact user trust?",
-                    f"What fear or confidence does this create?"
-                ],
-                "critical": [
-                    f"What new attack vectors could this create?",
-                    f"How could this security measure be bypassed?",
-                    f"What happens if this security system fails?",
-                    f"What false positive/negative risks exist?"
-                ],
-                "positive": [
-                    f"How could this improve overall security posture?",
-                    f"What threat prevention benefits are possible?",
-                    f"How could this reduce security incidents?",
-                    f"What peace of mind does this provide?"
-                ]
-            },
-            "sustainable agriculture": {
-                "factual": [
-                    f"What yield data supports this approach?",
-                    f"What environmental impact measurements exist?",
-                    f"What cost-benefit analysis applies?",
-                    f"What soil health indicators are relevant?"
-                ],
-                "emotional": [
-                    f"How do farmers feel about adopting this practice?",
-                    f"What concerns do consumers have?",
-                    f"How does this impact farming communities?",
-                    f"What pride or worry does this create?"
-                ],
-                "critical": [
-                    f"What environmental risks could arise?",
-                    f"How could this approach fail in different climates?",
-                    f"What economic risks do farmers face?",
-                    f"What unintended consequences are possible?"
-                ],
-                "positive": [
-                    f"How could this improve soil health?",
-                    f"What biodiversity benefits are possible?",
-                    f"How could this reduce environmental impact?",
-                    f"What long-term sustainability gains result?"
-                ]
-            }
-        }
+        # Use domain data manager for consolidated access
+        return domain_data_manager.get_domain_perspectives(domain)
 
-        return domain_perspectives.get(domain, {})
 
     def apply_six_thinking_hats(self, idea: str, context: Optional[CreativityContext] = None) -> Dict[str, List[str]]:
         """

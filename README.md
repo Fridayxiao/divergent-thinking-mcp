@@ -48,8 +48,8 @@ A unified tool providing access to 6 proven creativity methodologies through par
   上下文创意方法：增强的SCAMPER、类比思维、仿生学和六顶思考帽，具有领域特定智能
 - **🎨 Interactive Context Specification**: Agent-driven domain, audience, time period, resources, and goals specification for targeted creativity
   交互式上下文规范：代理驱动的领域、受众、时间段、资源和目标规范，实现有针对性的创造力
-- **🔍 Multi-word Domain Precision**: 78+ specific domains like "mobile app development", "healthcare technology", "sustainable agriculture"
-  多词领域精度：78+个特定领域，如"移动应用开发"、"医疗技术"、"可持续农业"
+- **🔍 Multi-word Domain Precision**: 78+ specialized domains like "artificial intelligence systems", "web application development", "digital product strategy"
+  多词领域精度：78+个专业领域，如"人工智能系统"、"网络应用开发"、"数字产品策略"
 - **🔄 Multi-turn vs Single-shot**: `structured_process` provides complete multi-turn exploration; others are single-response methods
   多轮与单次：`structured_process`提供完整的多轮探索；其他为单次响应方法
 - **⚡ Intelligent Routing**: Single tool interface with method-specific parameter handling and domain-aware processing
@@ -86,69 +86,73 @@ MCP服务器提供智能的、上下文敏感的创造力，具有针对特定�
 - **After**: "How does 'encryption' relate to secure systems in cybersecurity applications?" (domain-aware)
 
 **💡 Professional Relevance:**
-- **AI Domain**: Uses terms like "neural networks", "machine learning", "optimization" instead of random words
-- **Healthcare**: Focuses on "patient safety", "clinical evidence", "regulatory compliance"
-- **Business**: Emphasizes "market positioning", "competitive advantage", "ROI optimization"
+- **AI & Machine Learning**: Uses terms like "neural networks", "deep learning architectures", "model optimization" instead of random words
+- **Internet & Web Technologies**: Focuses on "api design", "microservices architecture", "web performance optimization"
+- **Computer Science & Systems**: Emphasizes "distributed systems", "cybersecurity architecture", "database optimization"
+- **Product Development**: Highlights "digital product strategy", "agile development", "user experience optimization"
+- **Engineering & Infrastructure**: Features "devops automation", "scalable architecture", "site reliability engineering"
 
-#### **1. Domain-Aware Educational Technology Innovation / 领域感知教育技术创新**
+#### **1. Domain-Aware AI System Development / 领域感知AI系统开发**
 
 ```json
 {
-  "thought": "Create an innovative learning platform",
+  "thought": "Create an intelligent code review system",
   "thinking_method": "structured_process",
-  "domain": "educational technology",
-  "target_audience": "remote students",
+  "domain": "artificial intelligence systems",
+  "target_audience": "software development teams",
   "time_period": "2025-2030",
-  "resources": "cloud computing, mobile devices, limited budget",
-  "goals": "improve engagement, reduce costs, increase accessibility"
+  "resources": "cloud computing, machine learning models, development APIs",
+  "goals": "improve code quality, reduce review time, enhance learning"
 }
 ```
 
 **🎯 Domain-Aware Output Example:**
-- **SCAMPER Enhancement**: "How could 'adaptive learning' substitute traditional methods in educational technology applications?"
-- **Analogical Thinking**: "How is your learning platform like 'cognitive science learning theories' in educational contexts?"
-- **Biomimicry**: "How could your platform mimic 'neural plasticity' for personalized learning adaptation?"
 
-#### **2. Cybersecurity Domain Intelligence / 网络安全领域智能**
+- **SCAMPER Enhancement**: "How could 'neural network analysis' substitute traditional code review methods in AI system applications?"
+- **Analogical Thinking**: "How is your code review system like 'immune system pattern recognition' in biological contexts?"
+- **Biomimicry**: "How could your system mimic 'neural plasticity' for adaptive learning from code patterns?"
+
+#### **2. Web Application Architecture Intelligence / 网络应用架构智能**
 
 ```json
 {
-  "thought": "Design a smart home security system",
+  "thought": "Design a scalable e-commerce platform",
   "thinking_method": "generate_branches",
-  "domain": "cybersecurity",
-  "target_audience": "elderly users",
-  "goals": "ease of use, reliability, affordability"
+  "domain": "web application development",
+  "target_audience": "small business owners",
+  "goals": "high performance, cost-effective, easy maintenance"
 }
 ```
 
-**🔒 Cybersecurity-Aware Outputs:**
-- **Domain Terms**: Uses "authentication", "encryption", "threat detection" instead of random words
-- **Six Thinking Hats**: "What threat vectors does this address?" (White Hat - Facts)
-- **Professional Context**: "How could this improve overall security posture for elderly users?"
+**🌐 Web Development-Aware Outputs:**
 
-#### **3. Context-Aware Constraints / 上下文感知约束**
+- **Domain Terms**: Uses "microservices", "api design", "performance optimization" instead of random words
+- **Six Thinking Hats**: "What scalability bottlenecks could this create?" (Black Hat - Critical)
+- **Professional Context**: "How could this improve user experience for small business customers?"
+
+#### **3. Context-Aware Product Strategy / 上下文感知产品策略**
 
 ```json
 {
-  "thought": "Develop a food delivery service",
+  "thought": "Develop a collaborative development platform",
   "thinking_method": "creative_constraint",
-  "domain": "e-commerce",
-  "constraint": "must work without smartphones",
-  "target_audience": "rural communities",
-  "resources": "limited internet, local partnerships"
+  "domain": "digital product strategy",
+  "constraint": "must work with legacy systems",
+  "target_audience": "enterprise development teams",
+  "resources": "existing infrastructure, security requirements"
 }
 ```
 
-#### **4. Time-Specific Innovation / 时间特定创新**
+#### **4. Time-Specific Infrastructure Innovation / 时间特定基础设施创新**
 
 ```json
 {
-  "thought": "Reimagine public transportation",
+  "thought": "Reimagine cloud deployment systems",
   "thinking_method": "perspective_shift",
-  "domain": "urban transportation",
-  "time_period": "2050",
+  "domain": "devops automation systems",
+  "time_period": "2030",
   "perspective_type": "impossible_being",
-  "goals": "zero emissions, universal accessibility"
+  "goals": "zero-downtime deployments, self-healing infrastructure"
 }
 ```
 
@@ -156,9 +160,9 @@ MCP服务器提供智能的、上下文敏感的创造力，具有针对特定�
 
 ### 🎯 Professional-Grade Creative Enhancement
 
-**Quantitative Improvements / 量化改进:**
-- **Domain Relevance**: 30% → 90%+ (relevant terms in creative outputs)
-- **Context Sensitivity**: Generic → Domain-specific patterns
+**Qualitative Improvements / 质量改进:**
+- **Domain Relevance**: Significant improvement in relevant terms within creative outputs
+- **Context Sensitivity**: Enhanced from generic to domain-specific patterns
 
 ### 🔧 Enhanced Creativity Methods / 增强的创意方法
 
@@ -166,34 +170,32 @@ MCP服务器提供智能的、上下文敏感的创造力，具有针对特定�
 
 - **🎨 SCAMPER Method**: Domain-specific prompts using intelligent word selection
   - *Before*: "What if we substitute the main component with something unexpected?"
-  - *After*: "What if you replaced key components with 'neural networks' for AI applications?"
+  - *After*: "What if you replaced key components with 'machine learning algorithms' for AI system applications?"
 
 - **🔗 Analogical Thinking**: Domain-relevant analogies from biological, mathematical, and engineering systems
   - *Before*: Generic nature analogies
-  - *After*: "How is your AI system like 'immune system pattern recognition' in biological contexts?"
+  - *After*: "How is your distributed system like 'neural network coordination' in biological contexts?"
 
 - **🌿 Biomimicry**: Nature-inspired solutions tailored to specific domains
   - *Before*: Random nature examples
-  - *After*: "How could your renewable energy system mimic 'photosynthesis energy conversion'?"
+  - *After*: "How could your microservices architecture mimic 'cellular organization' for specialized functions?"
 
 - **🎭 Six Thinking Hats**: Professional domain-specific perspectives
   - *Before*: Generic emotional/logical prompts
-  - *After*: "What clinical evidence supports this healthcare technology approach?" (White Hat)
+  - *After*: "What scalability bottlenecks could this web application create?" (Black Hat - Critical)
 
 - **💭 Word Association**: Domain-relevant word selection replacing random combinations
   - *Before*: "butterfly" + "cybersecurity"
-  - *After*: "encryption" + "network security"
+  - *After*: "api design" + "system integration"
 
-### Available Domains / 可用领域
+### Available Specialized Domains / 可用专业领域
 
-Choose from 78+ specific multi-word domains:
-从78+个特定的多词领域中选择：
+Choose from 78+ specialized domains focused on AI, Internet, Computer Science, Product, and Engineering:
+从78+个专注于AI、互联网、计算机科学、产品和工程的专业领域中选择：
 
-- **Design & UX**: `product design`, `user interface design`, `user experience design`
-- **Technology**: `software development`, `mobile app development`, `artificial intelligence`, `cybersecurity`
-- **Business**: `business strategy`, `digital marketing`, `e-commerce`, `startup ventures`
-- **Healthcare**: `medical devices`, `healthcare technology`, `telemedicine`, `patient care`
-- **Education**: `educational technology`, `online learning`, `curriculum development`
-- **Environment**: `renewable energy`, `sustainable agriculture`, `green technology`
-- **Transportation**: `urban transportation`, `electric vehicles`, `autonomous vehicles`
-- And many more... / 还有更多...
+- **AI & Machine Learning**: `artificial intelligence systems`, `machine learning algorithms`, `deep learning architectures`, `natural language processing`, `computer vision systems`, `reinforcement learning`, `generative ai models`
+- **Internet & Web Technologies**: `web application development`, `frontend frameworks`, `backend systems architecture`, `api design and development`, `microservices architecture`, `web performance optimization`, `progressive web applications`
+- **Computer Science & Systems**: `distributed systems design`, `database systems optimization`, `operating systems development`, `network protocols design`, `cybersecurity architecture`, `cloud computing platforms`, `software architecture patterns`
+- **Product Development & Management**: `digital product strategy`, `product lifecycle management`, `user experience optimization`, `product analytics platforms`, `agile product development`, `product market validation`, `feature prioritization systems`
+- **Engineering & Infrastructure**: `devops automation systems`, `infrastructure as code`, `continuous integration pipelines`, `container orchestration`, `monitoring and observability`, `scalable system architecture`, `site reliability engineering`
+- And many more specialized domains... / 还有更多专业领域...

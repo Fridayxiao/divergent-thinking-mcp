@@ -4,6 +4,38 @@ All notable changes to the Divergent Thinking MCP Server will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2025-07-18
+
+### 🎯 MAJOR DOMAIN SPECIALIZATION TRANSFORMATION
+- **SPECIALIZED DOMAIN FOCUS**: Complete transformation from broad general domains to specialized AI, Internet, Computer Science, Product, and Engineering domains
+- **PROFESSIONAL EXPERTISE ENHANCEMENT**: Enhanced domain-aware creativity with deep technical specialization across 78 precisely curated domains
+
+### Changed
+- **Domain Categories Restructured**: Transformed from 9 general categories to 5 specialized professional categories:
+  - **AI & Machine Learning** (18 domains): artificial intelligence systems, machine learning algorithms, deep learning architectures, natural language processing, computer vision systems, etc.
+  - **Internet & Web Technologies** (16 domains): web application development, frontend frameworks, backend systems architecture, api design and development, microservices architecture, etc.
+  - **Computer Science & Systems** (16 domains): distributed systems design, database systems optimization, cybersecurity architecture, cloud computing platforms, etc.
+  - **Product Development & Management** (14 domains): digital product strategy, product lifecycle management, agile product development, user experience optimization, etc.
+  - **Engineering & Infrastructure** (14 domains): devops automation systems, infrastructure as code, scalable system architecture, site reliability engineering, etc.
+
+### Enhanced
+- **Domain-Specific Creativity Word Banks**: Updated all 78 domains with specialized technical vocabulary, concepts, and methodologies
+- **Professional Analogical Thinking**: Enhanced domain mappings with industry-specific analogies and technical parallels
+- **Specialized Biomimicry Examples**: Updated nature-inspired solutions tailored to technical and engineering contexts
+- **Technical Six Thinking Hats**: Professional domain-specific perspectives for technical stakeholders and engineering decisions
+- **Domain Keywords Mapping**: Comprehensive technical keyword associations for enhanced contextual creativity
+
+### Technical Improvements
+- **Constants Architecture**: Maintained exact 78-domain count while completely restructuring domain focus
+- **Backward Compatibility**: Preserved all existing functionality while enhancing domain specialization
+- **Documentation Accuracy**: Updated README.md with factually verified claims and removed unsubstantiated performance metrics
+- **Code Synchronization**: Updated creativity_algorithms.py domain mappings to align with new specialized domains
+
+### Validation & Testing
+- **Domain Count Verification**: Confirmed exact 78-domain maintenance across all system components
+- **Syntax Validation**: Verified syntactic correctness of all updated files
+- **Integration Testing**: Ensured tool_definitions.py and enhanced_prompts.py automatic synchronization with new domains
+
 ## [0.2.2] - 2025-07-14
 
 ### Refactored
@@ -36,7 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Six Thinking Hats**: Professional domain-specific perspectives (e.g., clinical evidence for healthcare, threat vectors for cybersecurity)
 
 ### Performance Improvements
-- **Domain Relevance**: Improved from 30% to 90%+ relevant terms in creative outputs
+- **Domain Relevance**: Significant improvement in relevant terms within creative outputs
 - **Context Sensitivity**: Transformed from generic patterns to domain-specific, audience-aware creativity
 
 ### Technical Enhancements
